@@ -23,7 +23,7 @@ const Timeline = () => {
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Timeline</h1>
         
-        {/* Challenge 2: Timeline Filter */}
+        {/* Timeline Filter */}
         <select 
           className="select select-bordered w-full max-w-xs" 
           value={filter} 

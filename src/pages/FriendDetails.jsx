@@ -5,21 +5,25 @@ import toast from "react-hot-toast";
 import { Phone, MessageSquare, Video, Clock, Archive, Trash2 } from "lucide-react";
 
 const FriendDetails = () => {
-  const { id } = useParams(); // Get the ID from the URL
+  // useParams extracts the 'id' parameter from the URL (e.g., /friend/1)
+  const { id } = useParams(); 
   const navigate = useNavigate();
+  
+  // Bring in the global state function to log interactions
   const { addInteraction } = useContext(TimelineContext);
   
   const [friend, setFriend] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetch the specific friend based on the URL parameter
+  // Fetch the mock data and find the friend that matches the URL ID
   useEffect(() => {
     fetch('/friends.json')
       .then(res => res.json())
       .then(data => {
+        // Find the specific friend. Note: URL params are strings, so we parse to int.
         const foundFriend = data.find(f => f.id === parseInt(id));
         if (!foundFriend) {
-          navigate('/404'); // Redirect if ID doesn't exist
+          navigate('*'); // Redirect to 404 if ID doesn't exist
         } else {
           setFriend(foundFriend);
         }
@@ -30,6 +34,7 @@ const FriendDetails = () => {
   if (loading) return <div className="text-center py-12"><span className="loading loading-spinner loading-lg"></span></div>;
   if (!friend) return null;
 
+  // Handler for Quick Check-In buttons
   const handleInteraction = (type) => {
     addInteraction(type, friend.name);
     toast.success(`Logged a ${type} with ${friend.name}!`);
@@ -78,7 +83,7 @@ const FriendDetails = () => {
       {/* RIGHT COLUMN */}
       <div className="md:col-span-2 flex flex-col gap-6">
         
-        {/* 1. Stats Cards (3 cards) */}
+        {/* Stats Cards (3 cards) */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="stat bg-base-100 shadow rounded-xl border border-base-200 text-center">
             <div className="stat-title">Days Since Contact</div>
@@ -94,7 +99,7 @@ const FriendDetails = () => {
           </div>
         </div>
 
-        {/* 2. Relationship Goal Card */}
+        {/* Relationship Goal Card */}
         <div className="card bg-base-100 shadow-md border border-base-200">
           <div className="card-body flex-row justify-between items-center">
             <div>
@@ -105,7 +110,7 @@ const FriendDetails = () => {
           </div>
         </div>
 
-        {/* 3. Quick Check-In Card */}
+        {/* Quick Check-In Card */}
         <div className="card bg-base-100 shadow-md border border-base-200">
           <div className="card-body">
             <h3 className="font-bold text-lg mb-2">Quick Check-In</h3>
