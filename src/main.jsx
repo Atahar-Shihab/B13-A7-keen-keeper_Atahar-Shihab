@@ -11,7 +11,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <TimelineProvider>
       <App />
-      <ToastContainer position="bottom-right" />
+      <ToastContainer position="top-right" />
     </TimelineProvider>
   </React.StrictMode>,
 )
