@@ -1,16 +1,20 @@
-# React + Vite
+# 👥 KeenKeeper
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Keep Your Friendships Alive**
 
-Currently, two official plugins are available:
+KeenKeeper is a modern, responsive web application designed to help you track check-ins, set relationship goals, and never lose touch with the people who matter most. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### 👨‍💻 Developer
+**Atahar Shihab**
 
-## React Compiler
+### 🛠️ Technologies Used
+- **React.js (Vite)**: Component-based UI rendering.
+- **React Router DOM**: Client-side page navigation.
+- **Tailwind CSS & DaisyUI**: Rapid styling, responsive layouts, and UI components.
+- **Recharts**: Data visualization for friendship analytics.
+- **React Context API**: Global state management for tracking timeline interactions.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### ✨ Key Features
+1. **Dynamic Dashboard:** A visually appealing home grid displaying friends with status badges (overdue, almost due, on-track) indicating contact health.
+2. **Interactive Quick Check-Ins:** Easily log calls, texts, or video chats from a friend's detail page, which instantly triggers toast notifications and updates global state.
+3. **Analytics & Timeline Filtering:** A centralized timeline to view all logged interactions with a dropdown filter, paired with a Recharts-powered analytics page showing interaction breakdowns.
