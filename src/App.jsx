@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
 import { TimelineProvider } from "./context/TimelineContext";
 
 import Home from "./pages/Home";
@@ -13,6 +12,8 @@ import Footer from "./components/Footer";
 
 function App() {
   return (
+    // Note: TimelineProvider is also wrapping <App /> in main.jsx. 
+    // You usually only need it in one place!
     <TimelineProvider>
       <BrowserRouter>
         <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
@@ -27,7 +28,6 @@ function App() {
             </Routes>
           </main>
           <Footer />
-          <Toaster position="bottom-right" />
         </div>
       </BrowserRouter>
     </TimelineProvider>
