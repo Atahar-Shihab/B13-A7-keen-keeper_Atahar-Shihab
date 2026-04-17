@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Sarah Jenkins",
+    "picture": "https://i.pravatar.cc/150?img=1",
+    "email": "sarah.j@example.com",
+    "days_since_contact": 15,
+    "status": "overdue",
+    "tags": ["college", "close friend"],
+    "bio": "Met in university. Love hiking together.",
+    "goal": 14,
+    "next_due_date": "2026-04-15"
+  },
+  {
+    "id": 2,
+    "name": "Mike Ross",
+    "picture": "https://i.pravatar.cc/150?img=11",
+    "email": "mike.r@example.com",
+    "days_since_contact": 5,
+    "status": "on-track",
+    "tags": ["work", "mentor"],
+    "bio": "Former colleague and great advisor.",
+    "goal": 30,
+    "next_due_date": "2026-05-10"
+  }
+]
