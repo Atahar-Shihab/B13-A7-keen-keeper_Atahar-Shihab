@@ -46,7 +46,7 @@ const FriendDetails = () => {
 
   const handleInteraction = (type) => {
     addInteraction(type, friend.name);
-    toast.success(`Logged a ${type} with ${friend.name}!`, {
+    toast.success(`${type} logged with ${friend.name}!`, {
       style: { background: "#1b4332", color: "#fff" },
       iconTheme: { primary: "#52b788", secondary: "#fff" },
     });
