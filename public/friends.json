@@ -1,26 +1,74 @@
 [
   {
     "id": 1,
-    "name": "Sarah Jenkins",
+    "name": "Sarah Connor",
     "picture": "https://i.pravatar.cc/150?img=1",
-    "email": "sarah.j@example.com",
-    "days_since_contact": 15,
+    "email": "sarah.connor@example.com",
+    "days_since_contact": 18,
     "status": "overdue",
     "tags": ["college", "close friend"],
     "bio": "Met in university. Love hiking together.",
     "goal": 14,
-    "next_due_date": "2026-04-15"
+    "next_due_date": "2026-04-13"
   },
   {
     "id": 2,
-    "name": "Mike Ross",
+    "name": "Michael Chang",
     "picture": "https://i.pravatar.cc/150?img=11",
-    "email": "mike.r@example.com",
+    "email": "mike.chang@example.com",
     "days_since_contact": 5,
     "status": "on-track",
     "tags": ["work", "mentor"],
-    "bio": "Former colleague and great advisor.",
+    "bio": "Former manager, great for career advice.",
     "goal": 30,
-    "next_due_date": "2026-05-10"
+    "next_due_date": "2026-05-12"
+  },
+  {
+    "id": 3,
+    "name": "Emma Watson",
+    "picture": "https://i.pravatar.cc/150?img=5",
+    "email": "emma.w@example.com",
+    "days_since_contact": 13,
+    "status": "almost due",
+    "tags": ["childhood", "neighbors"],
+    "bio": "Grew up on the same street. We grab coffee monthly.",
+    "goal": 14,
+    "next_due_date": "2026-04-18"
+  },
+  {
+    "id": 4,
+    "name": "David Smith",
+    "picture": "https://i.pravatar.cc/150?img=3",
+    "email": "david.s@example.com",
+    "days_since_contact": 45,
+    "status": "overdue",
+    "tags": ["gym", "acquaintance"],
+    "bio": "Gym buddy, usually discuss fitness goals.",
+    "goal": 7,
+    "next_due_date": "2026-03-10"
+  },
+  {
+    "id": 5,
+    "name": "Lisa Ray",
+    "picture": "https://i.pravatar.cc/150?img=9",
+    "email": "lisa.ray@example.com",
+    "days_since_contact": 2,
+    "status": "on-track",
+    "tags": ["family", "sister"],
+    "bio": "My older sister. Always there when I need her.",
+    "goal": 7,
+    "next_due_date": "2026-04-22"
+  },
+  {
+    "id": 6,
+    "name": "James Franco",
+    "picture": "https://i.pravatar.cc/150?img=8",
+    "email": "james.f@example.com",
+    "days_since_contact": 28,
+    "status": "almost due",
+    "tags": ["college", "roommate"],
+    "bio": "College roommate. We play online games together.",
+    "goal": 30,
+    "next_due_date": "2026-04-19"
   }
 ]
