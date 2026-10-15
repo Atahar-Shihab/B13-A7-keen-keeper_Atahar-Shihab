@@ -5,6 +5,7 @@ import { Navbar } from './components/common/Navbar';
 import { Footer } from './components/common/Footer';
 import { CommandPalette } from './components/command/CommandPalette';
 import { AddFriendModal } from './components/common/AddFriendModal';
+import { PlatformGuideModal } from './components/common/PlatformGuideModal';
 
 import Home from './pages/Home';
 import FriendDetails from './pages/FriendDetails';
@@ -35,6 +36,7 @@ const GlobalShortcutsAndModals: React.FC = () => {
     <>
       <CommandPalette />
       <AddFriendModal />
+      <PlatformGuideModal />
     </>
   );
 };

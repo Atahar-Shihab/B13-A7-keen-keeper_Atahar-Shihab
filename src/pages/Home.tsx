@@ -7,6 +7,7 @@ import {
   Sparkles,
   Zap,
   Filter,
+  Compass,
 } from 'lucide-react';
 import { useFriends } from '../context/FriendContext';
 import { CircleTier, HealthStatus, SortField } from '../types';
@@ -21,7 +22,7 @@ import { FilterSortBar } from '../components/dashboard/FilterSortBar';
 import { FriendCard } from '../components/dashboard/FriendCard';
 
 const Home: React.FC = () => {
-  const { friends, interactions, openCommandPalette, openAddFriendModal } = useFriends();
+  const { friends, interactions, openCommandPalette, openAddFriendModal, openGuideModal } = useFriends();
 
   // Filter & Sort State
   const [search, setSearch] = useState('');
@@ -142,6 +143,15 @@ const Home: React.FC = () => {
             >
               <UserPlus className="w-4 h-4" />
               <span>Enroll Contact</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={openGuideModal}
+              className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white font-semibold text-xs flex items-center gap-2 border border-white/10 backdrop-blur-sm transition-colors"
+            >
+              <Compass className="w-4 h-4 text-emerald-400" />
+              <span>How It Works (Guide)</span>
             </button>
           </div>
         </div>

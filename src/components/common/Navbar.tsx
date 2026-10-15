@@ -11,12 +11,13 @@ import {
   X,
   Sparkles,
   Command,
+  Compass,
 } from 'lucide-react';
 import { useFriends } from '../../context/FriendContext';
 import { ThemeToggle } from './ThemeToggle';
 
 export const Navbar: React.FC = () => {
-  const { openCommandPalette, openAddFriendModal, resetToDemoData } = useFriends();
+  const { openCommandPalette, openAddFriendModal, resetToDemoData, openGuideModal } = useFriends();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
 
@@ -103,6 +104,17 @@ export const Navbar: React.FC = () => {
               <span className="hidden sm:inline">Add Contact</span>
             </button>
 
+            {/* Platform Guide Tour Trigger */}
+            <button
+              type="button"
+              onClick={openGuideModal}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-750 text-xs font-semibold transition-colors shadow-2xs"
+              title="Platform Guide & Walkthrough"
+            >
+              <Compass className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              <span className="hidden md:inline">Guide</span>
+            </button>
+
             {/* Reset Demo Data Button */}
             <button
               type="button"
@@ -159,6 +171,17 @@ export const Navbar: React.FC = () => {
             >
               <Search className="w-4 h-4" />
               Quick Command (⌘K)
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                openGuideModal();
+              }}
+              className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+            >
+              <Compass className="w-4 h-4 text-emerald-600" />
+              Platform Guide & Tour
             </button>
           </div>
         )}

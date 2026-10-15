@@ -39,6 +39,7 @@ export const CommandPalette: React.FC = () => {
     closeCommandPalette,
     addInteraction,
     addActionItem,
+    openAddFriendModal,
   } = useFriends();
 
   const [search, setSearch] = useState('');
@@ -215,8 +216,23 @@ export const CommandPalette: React.FC = () => {
 
             <div className="p-3 overflow-y-auto max-h-[380px] space-y-1">
               {filteredFriends.length === 0 ? (
-                <div className="py-12 text-center text-slate-400 text-sm">
-                  No relationships match "{search}".
+                <div className="py-10 text-center space-y-3">
+                  <p className="text-slate-400 text-sm">
+                    No relationships match "{search}".
+                  </p>
+                  {search.trim() && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        closeCommandPalette();
+                        openAddFriendModal();
+                      }}
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-sm transition-transform active:scale-95"
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>Enroll "{search.trim()}" as New Relationship</span>
+                    </button>
+                  )}
                 </div>
               ) : (
                 filteredFriends.map((friend, idx) => {

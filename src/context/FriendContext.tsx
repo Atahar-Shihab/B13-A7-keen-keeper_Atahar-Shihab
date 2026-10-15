@@ -24,6 +24,7 @@ interface FriendContextType {
   isCommandPaletteOpen: boolean;
   preselectedFriendForCommand: string | null;
   isAddFriendModalOpen: boolean;
+  isGuideModalOpen: boolean;
 
   // Friend CRUD
   addFriend: (friendData: {
@@ -86,6 +87,8 @@ interface FriendContextType {
   closeCommandPalette: () => void;
   openAddFriendModal: () => void;
   closeAddFriendModal: () => void;
+  openGuideModal: () => void;
+  closeGuideModal: () => void;
 }
 
 const FriendContext = createContext<FriendContextType | undefined>(undefined);
@@ -131,6 +134,13 @@ export const FriendProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [preselectedFriendForCommand, setPreselectedFriendForCommand] = useState<string | null>(null);
   const [isAddFriendModalOpen, setIsAddFriendModalOpen] = useState(false);
+  const [isGuideModalOpen, setIsGuideModalOpen] = useState(() => {
+    try {
+      return !localStorage.getItem('keenkeeper_guide_seen');
+    } catch {
+      return false;
+    }
+  });
 
   // Initialize CRM data from localStorage or seed data
   const [interactions, setInteractions] = useState<Interaction[]>(() => {
@@ -212,6 +222,17 @@ export const FriendProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const closeAddFriendModal = useCallback(() => {
     setIsAddFriendModalOpen(false);
+  }, []);
+
+  const openGuideModal = useCallback(() => {
+    setIsGuideModalOpen(true);
+  }, []);
+
+  const closeGuideModal = useCallback(() => {
+    setIsGuideModalOpen(false);
+    try {
+      localStorage.setItem('keenkeeper_guide_seen', 'true');
+    } catch {}
   }, []);
 
   // Friend CRUD
@@ -483,6 +504,9 @@ export const FriendProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     closeCommandPalette,
     openAddFriendModal,
     closeAddFriendModal,
+    isGuideModalOpen,
+    openGuideModal,
+    closeGuideModal,
   };
 
   return <FriendContext.Provider value={value}>{children}</FriendContext.Provider>;
