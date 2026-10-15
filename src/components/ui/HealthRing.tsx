@@ -8,6 +8,7 @@ interface HealthRingProps {
   size?: 'sm' | 'md' | 'lg' | 'xl' | number;
   strokeWidth?: number;
   showText?: boolean;
+  showScore?: boolean;
   className?: string;
   animate?: boolean;
 }
@@ -25,9 +26,11 @@ export const HealthRing: React.FC<HealthRingProps> = ({
   size = 'md',
   strokeWidth: customStroke,
   showText = true,
+  showScore,
   className = '',
   animate = true,
 }) => {
+  const isTextVisible = showScore !== undefined ? showScore : showText;
   const circleRef = useRef<SVGCircleElement>(null);
 
   const config =
@@ -116,7 +119,7 @@ export const HealthRing: React.FC<HealthRingProps> = ({
         />
       </svg>
 
-      {showText && (
+      {isTextVisible && (
         <div className="absolute inset-0 flex items-center justify-center text-center select-none">
           <span className={`${config.textClass} text-slate-900 dark:text-white leading-none`}>
             {Math.round(score)}%
