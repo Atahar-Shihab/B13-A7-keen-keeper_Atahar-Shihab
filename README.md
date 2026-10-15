@@ -18,8 +18,8 @@
   </p>
 
   <p align="center">
-    🚀 <strong>Primary Production URL:</strong> <a href="https://keen-keeper-shihab.vercel.app/">https://keen-keeper-shihab.vercel.app/</a><br />
-    🌐 <strong>Coursework Production URL:</strong> <a href="https://b13-a7-keen-keeper-atahar-shihab.vercel.app/">https://b13-a7-keen-keeper-atahar-shihab.vercel.app/</a>
+    🌐 <strong>Live Production URL:</strong> <a href="https://keen-keeper-shihab.vercel.app/"><strong>https://keen-keeper-shihab.vercel.app/</strong></a><br />
+    <span style="font-size: 12px; opacity: 0.85;">(Coursework Mirror: <a href="https://b13-a7-keen-keeper-atahar-shihab.vercel.app/">b13-a7-keen-keeper-atahar-shihab.vercel.app</a>)</span>
   </p>
 
   <p>
