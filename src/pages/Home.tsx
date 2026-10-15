@@ -22,7 +22,14 @@ import { FilterSortBar } from '../components/dashboard/FilterSortBar';
 import { FriendCard } from '../components/dashboard/FriendCard';
 
 const Home: React.FC = () => {
-  const { friends, interactions, openCommandPalette, openAddFriendModal, openGuideModal } = useFriends();
+  const {
+    friends,
+    interactions,
+    openCommandPalette,
+    openAddFriendModal,
+    openGuideModal,
+    openSprintModal,
+  } = useFriends();
 
   // Filter & Sort State
   const [search, setSearch] = useState('');
@@ -129,10 +136,22 @@ const Home: React.FC = () => {
               onClick={() => openCommandPalette()}
               className="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-xs flex items-center gap-2 shadow-lg shadow-emerald-500/20 transition-transform active:scale-95"
             >
-              <Zap className="w-4 h-4 fill-current" />
+              <Command className="w-4 h-4" />
               <span>Quick Check-In</span>
               <kbd className="ml-1 px-1.5 py-0.5 rounded bg-emerald-600/60 text-white font-mono text-[10px]">
                 ⌘K
+              </kbd>
+            </button>
+
+            <button
+              type="button"
+              onClick={openSprintModal}
+              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-indigo-600 hover:from-amber-400 hover:to-indigo-500 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-indigo-600/25 transition-transform active:scale-95"
+            >
+              <Zap className="w-4 h-4 fill-current text-amber-200" />
+              <span>5-Min Sprint</span>
+              <kbd className="ml-1 px-1.5 py-0.5 rounded bg-black/25 text-white font-mono text-[10px]">
+                ⌘J
               </kbd>
             </button>
 

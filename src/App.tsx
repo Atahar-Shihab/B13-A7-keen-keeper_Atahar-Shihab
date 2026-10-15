@@ -9,6 +9,7 @@ import { Footer } from './components/common/Footer';
 import { CommandPalette } from './components/command/CommandPalette';
 import { AddFriendModal } from './components/common/AddFriendModal';
 import { PlatformGuideModal } from './components/common/PlatformGuideModal';
+import { ReconnectSprintModal } from './components/sprint/ReconnectSprintModal';
 
 import Home from './pages/Home';
 import FriendDetails from './pages/FriendDetails';
@@ -43,10 +44,18 @@ const SmoothScrollProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 };
 
 const GlobalShortcutsAndModals: React.FC = () => {
-  const { openCommandPalette, isCommandPaletteOpen, closeCommandPalette } = useFriends();
+  const {
+    openCommandPalette,
+    isCommandPaletteOpen,
+    closeCommandPalette,
+    openSprintModal,
+    isSprintModalOpen,
+    closeSprintModal,
+  } = useFriends();
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Cmd/Ctrl + K -> Quick check-in command palette
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         if (isCommandPaletteOpen) {
@@ -55,17 +64,34 @@ const GlobalShortcutsAndModals: React.FC = () => {
           openCommandPalette();
         }
       }
+      // Cmd/Ctrl + J -> 5-Minute Reconnect Sprint
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'j') {
+        e.preventDefault();
+        if (isSprintModalOpen) {
+          closeSprintModal();
+        } else {
+          openSprintModal();
+        }
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [openCommandPalette, isCommandPaletteOpen, closeCommandPalette]);
+  }, [
+    openCommandPalette,
+    isCommandPaletteOpen,
+    closeCommandPalette,
+    openSprintModal,
+    isSprintModalOpen,
+    closeSprintModal,
+  ]);
 
   return (
     <>
       <CommandPalette />
       <AddFriendModal />
       <PlatformGuideModal />
+      <ReconnectSprintModal />
       <Toaster richColors position="bottom-right" closeButton />
     </>
   );

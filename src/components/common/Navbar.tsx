@@ -12,12 +12,19 @@ import {
   Sparkles,
   Command,
   Compass,
+  Zap,
 } from 'lucide-react';
 import { useFriends } from '../../context/FriendContext';
 import { ThemeToggle } from './ThemeToggle';
 
 export const Navbar: React.FC = () => {
-  const { openCommandPalette, openAddFriendModal, resetToDemoData, openGuideModal } = useFriends();
+  const {
+    openCommandPalette,
+    openAddFriendModal,
+    resetToDemoData,
+    openGuideModal,
+    openSprintModal,
+  } = useFriends();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
 
@@ -80,6 +87,20 @@ export const Navbar: React.FC = () => {
 
           {/* Right: Actions, Command Trigger, Theme & Modals */}
           <div className="flex items-center gap-2.5">
+            {/* 5-Min Reconnect Sprint CTA */}
+            <button
+              type="button"
+              onClick={openSprintModal}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/10 via-amber-500/15 to-indigo-500/10 hover:from-amber-500/20 hover:to-indigo-500/20 border border-amber-500/30 dark:border-amber-400/30 text-amber-700 dark:text-amber-300 text-xs font-semibold transition-all hover:scale-[1.02] active:scale-[0.98] shadow-2xs"
+              title="5-Minute Reconnect Sprint (Cmd+J)"
+            >
+              <Zap className="w-3.5 h-3.5 text-amber-500 fill-current animate-pulse" />
+              <span className="hidden sm:inline">Sprint</span>
+              <kbd className="hidden lg:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-mono font-medium rounded bg-white/80 dark:bg-slate-900/80 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300">
+                <Command className="w-2.5 h-2.5" /> J
+              </kbd>
+            </button>
+
             {/* Quick Command Trigger Badge Button */}
             <button
               type="button"
