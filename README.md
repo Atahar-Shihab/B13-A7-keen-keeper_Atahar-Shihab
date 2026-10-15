@@ -10,6 +10,7 @@
   [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-3.4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
   [![Recharts](https://img.shields.io/badge/Recharts-3.8-22C55E?style=flat-square)](https://recharts.org/)
   [![Google Gemini AI](https://img.shields.io/badge/Gemini_AI-Flash_1.5-8E75B2?style=flat-square&logo=googlegemini&logoColor=white)](https://ai.google.dev/)
+  [![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel%20Production-000000?style=flat-square&logo=vercel&logoColor=white)](https://b13-a7-keen-keeper-atahar-shihab.vercel.app/)
   [![License](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
 
   <p align="center">
@@ -17,7 +18,12 @@
     Nurture deep personal and professional connections through mathematical half-life cadences, instant keyboard logging, and AI relationship briefings.
   </p>
 
+  <p align="center">
+    🚀 <strong>Live Demo:</strong> <a href="https://b13-a7-keen-keeper-atahar-shihab.vercel.app/">https://b13-a7-keen-keeper-atahar-shihab.vercel.app/</a>
+  </p>
+
   <p>
+    <a href="#-live-deployment">Live Demo</a> •
     <a href="#-system-architecture">System Architecture</a> •
     <a href="#-mathematical-health-decay-formula">Health Decay Engine</a> •
     <a href="#-core-feature-suite">Feature Breakdown</a> •
@@ -35,6 +41,17 @@ Human memory degrades over time; so do unmaintained relationships. As profession
 Traditional CRMs (Salesforce, HubSpot) are transactional sales funnels. Traditional to-do apps (Todoist, Notion) lack temporal decay models.
 
 **KeenKeeper v2.0** bridges this gap: a keyboard-first, client-side personal CRM powered by an **exponential half-life decay engine**. It monitors days elapsed since last contact relative to customizable circle tier targets, highlights drifting relationships in a priority queue, synthesizes conversation history using Google Gemini, and enables complete data ownership via JSON/CSV exports.
+
+---
+
+## 🌐 Live Deployment
+
+KeenKeeper v2.0 is deployed in production on Vercel:  
+👉 **[https://b13-a7-keen-keeper-atahar-shihab.vercel.app/](https://b13-a7-keen-keeper-atahar-shihab.vercel.app/)**
+
+- **Client-Side SPA Routing**: Fully configured via `vercel.json` rewrites for refreshable deep links (`/friend/:id`, `/timeline`, `/stats`).
+- **Zero-Latency Local Persistence**: Real-time `localStorage` state synchronization with instant offline fallback.
+- **Recruiter Demo Sandbox**: One-click "Reset Demo Data" trigger in the Navbar to restore the 12-contact, 63-log CRM dataset at any time.
 
 ---
 
