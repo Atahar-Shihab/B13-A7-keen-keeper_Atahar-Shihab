@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { toast } from 'sonner';
 import {
   Friend,
   Interaction,
@@ -7,6 +8,7 @@ import {
   CircleTier,
   ChannelType,
   InteractionDepth,
+  PersonaCategory,
 } from '../types';
 import { SEED_FRIENDS, SEED_INTERACTIONS } from '../data/seedData';
 import { computeFriendHealth } from '../lib/relationshipEngine';
@@ -25,6 +27,8 @@ interface FriendContextType {
   preselectedFriendForCommand: string | null;
   isAddFriendModalOpen: boolean;
   isGuideModalOpen: boolean;
+  isSprintModalOpen: boolean;
+  activePersona: PersonaCategory | 'all';
 
   // Friend CRUD
   addFriend: (friendData: {
@@ -35,6 +39,10 @@ interface FriendContextType {
     location?: string;
     company?: string;
     role?: string;
+    category?: PersonaCategory;
+    roleOrContext?: string;
+    companyOrOrg?: string;
+    linkedinUrl?: string;
     circleTier: CircleTier;
     tags?: string[];
     bio?: string;
@@ -44,6 +52,8 @@ interface FriendContextType {
   deleteFriend: (id: string) => void;
   getFriend: (id: string) => Friend | undefined;
   getFriendInteractions: (friendId: string) => Interaction[];
+  snoozeFriend: (id: string, days?: number) => void;
+  unsnoozeFriend: (id: string) => void;
 
   // Interaction CRUD
   addInteraction: (data: {
@@ -89,6 +99,9 @@ interface FriendContextType {
   closeAddFriendModal: () => void;
   openGuideModal: () => void;
   closeGuideModal: () => void;
+  openSprintModal: () => void;
+  closeSprintModal: () => void;
+  setActivePersona: (persona: PersonaCategory | 'all') => void;
 }
 
 const FriendContext = createContext<FriendContextType | undefined>(undefined);
@@ -111,8 +124,18 @@ const recalculateAllFriends = (
       latest
     );
 
+    // Backward-compatible category resolution
+    const category: PersonaCategory =
+      friend.category ||
+      (friend.circleTier === 'Key Network' || friend.circleTier === 'Acquaintances'
+        ? 'career'
+        : 'personal');
+
     return {
       ...friend,
+      category,
+      vault: Array.isArray(friend.vault) ? friend.vault : [],
+      actionItems: Array.isArray(friend.actionItems) ? friend.actionItems : [],
       lastContactDate: latestDate,
       healthScore: computed.score,
       status: computed.status,
@@ -130,10 +153,14 @@ export const FriendProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       : 'light';
   });
 
+  // Dual-Persona filter state
+  const [activePersona, setActivePersona] = useState<PersonaCategory | 'all'>('all');
+
   // Modal states
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [preselectedFriendForCommand, setPreselectedFriendForCommand] = useState<string | null>(null);
   const [isAddFriendModalOpen, setIsAddFriendModalOpen] = useState(false);
+  const [isSprintModalOpen, setIsSprintModalOpen] = useState(false);
   const [isGuideModalOpen, setIsGuideModalOpen] = useState(() => {
     try {
       return !localStorage.getItem('keenkeeper_guide_seen');
@@ -245,6 +272,10 @@ export const FriendProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       location?: string;
       company?: string;
       role?: string;
+      category?: PersonaCategory;
+      roleOrContext?: string;
+      companyOrOrg?: string;
+      linkedinUrl?: string;
       circleTier: CircleTier;
       tags?: string[];
       bio?: string;
@@ -260,8 +291,12 @@ export const FriendProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         email: friendData.email,
         phone: friendData.phone || '',
         location: friendData.location || '',
-        company: friendData.company || '',
-        role: friendData.role || '',
+        company: friendData.company || friendData.companyOrOrg || '',
+        role: friendData.role || friendData.roleOrContext || '',
+        category: friendData.category || 'personal',
+        roleOrContext: friendData.roleOrContext || friendData.role || '',
+        companyOrOrg: friendData.companyOrOrg || friendData.company || '',
+        linkedinUrl: friendData.linkedinUrl || '',
         circleTier: friendData.circleTier,
         tags: friendData.tags || ['Network'],
         bio: friendData.bio || '',
@@ -275,6 +310,9 @@ export const FriendProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       };
 
       setFriends((prev) => [newFriend, ...prev]);
+      toast.success(
+        `Enrolled ${newFriend.name} into ${newFriend.category === 'career' ? 'Career & Mentors' : 'Personal Circle'}`
+      );
       return newFriend;
     },
     []
@@ -293,6 +331,23 @@ export const FriendProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const deleteFriend = useCallback((id: string) => {
     setFriends((prev) => prev.filter((f) => f.id !== id));
     setInteractions((prev) => prev.filter((i) => i.friendId !== id));
+    toast.info('Contact archived');
+  }, []);
+
+  const snoozeFriend = useCallback((id: string, days: number = 7) => {
+    const snoozeDate = new Date();
+    snoozeDate.setDate(snoozeDate.getDate() + days);
+    setFriends((prev) =>
+      prev.map((f) => (f.id === id ? { ...f, snoozeUntil: snoozeDate.toISOString() } : f))
+    );
+    toast.success(`Check-in snoozed for ${days} days`);
+  }, []);
+
+  const unsnoozeFriend = useCallback((id: string) => {
+    setFriends((prev) =>
+      prev.map((f) => (f.id === id ? { ...f, snoozeUntil: undefined } : f))
+    );
+    toast.info('Snooze cleared');
   }, []);
 
   const getFriend = useCallback(
@@ -476,6 +531,14 @@ export const FriendProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     []
   );
 
+  const openSprintModal = useCallback(() => {
+    setIsSprintModalOpen(true);
+  }, []);
+
+  const closeSprintModal = useCallback(() => {
+    setIsSprintModalOpen(false);
+  }, []);
+
   const value: FriendContextType = {
     friends,
     interactions,
@@ -483,11 +546,16 @@ export const FriendProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     isCommandPaletteOpen,
     preselectedFriendForCommand,
     isAddFriendModalOpen,
+    isGuideModalOpen,
+    isSprintModalOpen,
+    activePersona,
     addFriend,
     updateFriend,
     deleteFriend,
     getFriend,
     getFriendInteractions,
+    snoozeFriend,
+    unsnoozeFriend,
     addInteraction,
     updateInteraction,
     deleteInteraction,
@@ -504,9 +572,11 @@ export const FriendProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     closeCommandPalette,
     openAddFriendModal,
     closeAddFriendModal,
-    isGuideModalOpen,
     openGuideModal,
     closeGuideModal,
+    openSprintModal,
+    closeSprintModal,
+    setActivePersona,
   };
 
   return <FriendContext.Provider value={value}>{children}</FriendContext.Provider>;

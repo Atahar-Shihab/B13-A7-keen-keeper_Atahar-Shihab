@@ -116,18 +116,50 @@ export const computeFriendHealth = (
 };
 
 /**
+ * Checks if a friend has an active snooze applied
+ */
+export const isFriendSnoozed = (friend: Friend): boolean => {
+  if (!friend.snoozeUntil) return false;
+  return new Date(friend.snoozeUntil).getTime() > Date.now();
+};
+
+/**
  * Filters and ranks contacts needing attention today (score < 50),
+ * excluding contacts that are currently snoozed,
  * weighted by circle tier importance:
  * urgency = (100 - healthScore) * tierPriorityWeight
  */
 export const rankNeedsAttentionQueue = (friends: Friend[]): Friend[] => {
   return friends
-    .filter((f) => f.healthScore < 50)
+    .filter((f) => f.healthScore < 50 && !isFriendSnoozed(f))
     .sort((a, b) => {
       const priorityA = (100 - a.healthScore) * (TIER_PRIORITY_WEIGHTS[a.circleTier] || 1);
       const priorityB = (100 - b.healthScore) * (TIER_PRIORITY_WEIGHTS[b.circleTier] || 1);
       return priorityB - priorityA;
     });
+};
+
+/**
+ * Selects 3 to 5 highest-priority candidates for the Weekly Reconnect Sprint
+ */
+export const getReconnectSprintCandidates = (friends: Friend[], maxCount: number = 5): Friend[] => {
+  const needsReconnect = friends
+    .filter((f) => f.healthScore < 60 && !isFriendSnoozed(f))
+    .sort((a, b) => {
+      const priorityA = (100 - a.healthScore) * (TIER_PRIORITY_WEIGHTS[a.circleTier] || 1);
+      const priorityB = (100 - b.healthScore) * (TIER_PRIORITY_WEIGHTS[b.circleTier] || 1);
+      return priorityB - priorityA;
+    });
+
+  if (needsReconnect.length >= maxCount) {
+    return needsReconnect.slice(0, maxCount);
+  }
+
+  const remaining = friends
+    .filter((f) => !needsReconnect.some((c) => c.id === f.id) && !isFriendSnoozed(f))
+    .sort((a, b) => a.healthScore - b.healthScore);
+
+  return [...needsReconnect, ...remaining].slice(0, maxCount);
 };
 
 /**

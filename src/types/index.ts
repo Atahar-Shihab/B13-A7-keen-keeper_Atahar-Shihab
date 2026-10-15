@@ -40,6 +40,8 @@ export interface Interaction {
   createdAt: string;
 }
 
+export type PersonaCategory = 'personal' | 'career';
+
 export interface Friend {
   id: string;
   name: string;
@@ -49,6 +51,11 @@ export interface Friend {
   location?: string;
   company?: string;
   role?: string;
+  category: PersonaCategory;
+  linkedinUrl?: string;
+  roleOrContext?: string;
+  companyOrOrg?: string;
+  snoozeUntil?: string; // ISO string if check-in snoozed
   circleTier: CircleTier;
   tags: string[];
   bio: string;
@@ -124,10 +131,24 @@ export type SortField = 'healthAsc' | 'healthDesc' | 'lastContact' | 'name' | 't
 
 export interface FriendFilterCriteria {
   searchQuery: string;
+  categoryFilter?: PersonaCategory | 'All';
   tierFilter: CircleTier | 'All';
   statusFilter: HealthStatus | 'All';
   tagFilter: string | 'All';
   sortBy: SortField;
+}
+
+export interface ReconnectSprintDrafts {
+  casual: string;
+  warm: string;
+  professional: string;
+}
+
+export interface ReconnectSprintCandidate {
+  friend: Friend;
+  suggestedAction: string;
+  draftMessages: ReconnectSprintDrafts;
+  urgency: 'high' | 'medium' | 'low';
 }
 
 export interface TimelineFilterCriteria {
