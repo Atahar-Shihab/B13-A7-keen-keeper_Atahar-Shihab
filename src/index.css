@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,14 +8,27 @@
   --primary: #2d6a4f;
   --primary-dark: #1b4332;
   --primary-light: #40916c;
-  --bg: #f8f9fa;
+  --bg: #f8fafc;
   --white: #ffffff;
-  --text: #212529;
-  --text-muted: #6c757d;
-  --border: #e9ecef;
-  --status-overdue: #e63946;
-  --status-almost: #f4a261;
-  --status-ontrack: #2d6a4f;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --status-overdue: #ef4444;
+  --status-almost: #f59e0b;
+  --status-ontrack: #10b981;
+  color-scheme: light;
+}
+
+html.dark {
+  --bg: #090d16;
+  --white: #0f172a;
+  --text: #f8fafc;
+  --text-muted: #94a3b8;
+  --border: #1e293b;
+  --status-overdue: #f87171;
+  --status-almost: #fbbf24;
+  --status-ontrack: #34d399;
+  color-scheme: dark;
 }
 
 * {
@@ -25,10 +38,11 @@
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--bg);
   color: var(--text);
   min-height: 100vh;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 #root {
@@ -39,4 +53,23 @@ body {
   max-width: 100%;
   border: none;
   text-align: left;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.4);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.7);
 }
