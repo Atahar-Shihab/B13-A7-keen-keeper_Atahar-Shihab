@@ -12,7 +12,9 @@ import {
   Sparkles,
   Check,
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { useFriends } from '../context/FriendContext';
+import { PersonaCategory } from '../types';
 import {
   calculateNetworkKPIs,
   calculate12WeekMomentum,
@@ -28,36 +30,62 @@ import { MomentumAreaChart } from '../components/analytics/MomentumAreaChart';
 import { ChannelDonut } from '../components/analytics/ChannelDonut';
 import { CircleHealthChart } from '../components/analytics/CircleHealthChart';
 import { AtRiskList } from '../components/analytics/AtRiskList';
+import { PersonaSwitcher } from '../components/dashboard/PersonaSwitcher';
+import { SpotlightCard } from '../components/ui/SpotlightCard';
+import { AnimatedCounter } from '../components/ui/AnimatedCounter';
 
 export const Stats: React.FC = () => {
   const { friends, interactions, importFullState } = useFriends();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [importMessage, setImportMessage] = useState<string | null>(null);
+  const [statsPersona, setStatsPersona] = useState<PersonaCategory | 'all'>('all');
+
+  // Filter friends and interactions by selected persona
+  const filteredFriends = useMemo(() => {
+    if (statsPersona === 'all') return friends;
+    return friends.filter((f) => f.category === statsPersona);
+  }, [friends, statsPersona]);
+
+  const filteredInteractions = useMemo(() => {
+    if (statsPersona === 'all') return interactions;
+    const friendIdSet = new Set(filteredFriends.map((f) => f.id));
+    return interactions.filter((i) => friendIdSet.has(i.friendId));
+  }, [interactions, filteredFriends, statsPersona]);
+
+  const personaCounts = useMemo(
+    () => ({
+      all: friends.length,
+      personal: friends.filter((f) => f.category === 'personal').length,
+      career: friends.filter((f) => f.category === 'career').length,
+    }),
+    [friends]
+  );
 
   // Analytics datasets
   const kpis = useMemo(() => {
-    return calculateNetworkKPIs(friends, interactions);
-  }, [friends, interactions]);
+    return calculateNetworkKPIs(filteredFriends, filteredInteractions);
+  }, [filteredFriends, filteredInteractions]);
 
   const momentumData = useMemo(() => {
-    return calculate12WeekMomentum(interactions);
-  }, [interactions]);
+    return calculate12WeekMomentum(filteredInteractions);
+  }, [filteredInteractions]);
 
   const channelData = useMemo(() => {
-    return calculateChannelMix(interactions);
-  }, [interactions]);
+    return calculateChannelMix(filteredInteractions);
+  }, [filteredInteractions]);
 
   const tierHealthData = useMemo(() => {
-    return calculateTierHealthBreakdown(friends);
-  }, [friends]);
+    return calculateTierHealthBreakdown(filteredFriends);
+  }, [filteredFriends]);
 
   // Portability Actions
   const handleExportJSON = () => {
     exportJSONBackup(friends, interactions);
+    toast.success('Downloaded full JSON backup!');
   };
 
   const handleExportCSV = () => {
-    exportCSVReport(friends);
+    exportCSVReport(filteredFriends);
+    toast.success(`Exported ${filteredFriends.length} contacts to CSV!`);
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,14 +100,14 @@ export const Stats: React.FC = () => {
           parseAndValidateJSONBackup(text);
 
         importFullState(newFriends, newInteractions);
-        setImportMessage(`Successfully restored ${newFriends.length} contacts and ${newInteractions.length} logs!`);
-        setTimeout(() => setImportMessage(null), 4000);
+        toast.success(
+          `Successfully restored ${newFriends.length} contacts and ${newInteractions.length} logs!`
+        );
       } catch (err: any) {
-        alert(err.message || 'Error restoring JSON backup');
+        toast.error(err.message || 'Error restoring JSON backup');
       }
     };
     reader.readAsText(file);
-    // Reset file input
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -88,10 +116,10 @@ export const Stats: React.FC = () => {
   return (
     <div className="space-y-8 animate-in fade-in duration-300 pb-12">
       {/* Header & Export Toolbar */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white flex items-center gap-2.5">
-            <BarChart3 className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
+            <BarChart3 className="w-7 h-7 text-indigo-600 dark:text-indigo-400" />
             Executive Relationship Analytics
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
@@ -104,7 +132,7 @@ export const Stats: React.FC = () => {
           <button
             type="button"
             onClick={handleExportCSV}
-            className="px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-850 text-slate-700 dark:text-slate-300 text-xs font-semibold flex items-center gap-2 shadow-2xs transition-colors"
+            className="px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold flex items-center gap-2 shadow-2xs transition-colors"
             title="Download CSV spreadsheet report"
           >
             <FileSpreadsheet className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
@@ -114,14 +142,14 @@ export const Stats: React.FC = () => {
           <button
             type="button"
             onClick={handleExportJSON}
-            className="px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-850 text-slate-700 dark:text-slate-300 text-xs font-semibold flex items-center gap-2 shadow-2xs transition-colors"
+            className="px-3.5 py-2 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold flex items-center gap-2 shadow-2xs transition-colors"
             title="Download full JSON CRM backup"
           >
             <FileJson className="w-4 h-4 text-blue-600 dark:text-blue-400" />
             <span>Backup JSON</span>
           </button>
 
-          <label className="px-3.5 py-2 rounded-xl bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-slate-100 text-white dark:text-slate-900 text-xs font-semibold flex items-center gap-2 cursor-pointer shadow-sm transition-colors">
+          <label className="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center gap-2 cursor-pointer shadow-sm shadow-indigo-600/20 transition-colors">
             <Upload className="w-4 h-4" />
             <span>Restore Backup</span>
             <input
@@ -135,94 +163,104 @@ export const Stats: React.FC = () => {
         </div>
       </div>
 
-      {/* Import Notification Banner */}
-      {importMessage && (
-        <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 text-xs font-semibold flex items-center gap-2 animate-in fade-in duration-200">
-          <Check className="w-4 h-4 text-emerald-600" />
-          <span>{importMessage}</span>
+      {/* Persona Scope Switcher Bar */}
+      <div className="flex items-center justify-between p-3.5 rounded-2xl bg-white/60 dark:bg-slate-900/60 backdrop-blur-md border border-slate-200/80 dark:border-slate-800/80 shadow-xs">
+        <div className="flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-indigo-500" />
+          <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+            Analytics Persona Scope:
+          </span>
         </div>
-      )}
+        <PersonaSwitcher
+          value={statsPersona}
+          onChange={setStatsPersona}
+          counts={personaCounts}
+        />
+      </div>
 
       {/* Top 4 KPI Metric Chips */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* KPI 1: Network Health */}
-        <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between">
+        <SpotlightCard className="p-5 flex flex-col justify-between" spotlightColor="rgba(16, 185, 129, 0.12)">
           <div className="flex items-center justify-between text-slate-500">
             <span className="text-xs font-semibold">Average Network Health</span>
             <Activity className="w-4 h-4 text-emerald-500" />
           </div>
           <div className="mt-3">
             <span className="text-3xl font-black text-slate-900 dark:text-white">
-              {kpis.averageHealth}%
+              <AnimatedCounter value={kpis.averageHealth} suffix="%" />
             </span>
             <p className="text-[11px] text-slate-400 mt-1">
               {kpis.thrivingCount} Thriving · {kpis.steadyCount} Steady
             </p>
           </div>
-        </div>
+        </SpotlightCard>
 
-        {/* KPI 2: Weekly Streak */}
-        <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between">
+        {/* KPI 2: Needs Attention */}
+        <SpotlightCard className="p-5 flex flex-col justify-between" spotlightColor="rgba(239, 68, 68, 0.12)">
           <div className="flex items-center justify-between text-slate-500">
-            <span className="text-xs font-semibold">Weekly Streak</span>
-            <Flame className="w-4 h-4 text-amber-500 fill-amber-500" />
-          </div>
-          <div className="mt-3">
-            <span className="text-3xl font-black text-amber-600 dark:text-amber-400">
-              {kpis.weeklyStreak} Weeks
-            </span>
-            <p className="text-[11px] text-slate-400 mt-1">
-              Consecutive outreach momentum
-            </p>
-          </div>
-        </div>
-
-        {/* KPI 3: Total Logs */}
-        <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between text-slate-500">
-            <span className="text-xs font-semibold">Total Interactions</span>
-            <Users className="w-4 h-4 text-blue-500" />
-          </div>
-          <div className="mt-3">
-            <span className="text-3xl font-black text-slate-900 dark:text-white">
-              {kpis.totalInteractions}
-            </span>
-            <p className="text-[11px] text-slate-400 mt-1">
-              {kpis.monthlyInteractions} in last 30 days
-            </p>
-          </div>
-        </div>
-
-        {/* KPI 4: Needs Attention */}
-        <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between text-slate-500">
-            <span className="text-xs font-semibold">Needs Attention</span>
+            <span className="text-xs font-semibold">Decaying Relationships</span>
             <AlertTriangle className="w-4 h-4 text-rose-500" />
           </div>
           <div className="mt-3">
             <span className="text-3xl font-black text-rose-600 dark:text-rose-400">
-              {kpis.needsAttentionCount} Contacts
+              <AnimatedCounter value={kpis.needsAttentionCount} />
             </span>
             <p className="text-[11px] text-slate-400 mt-1">
               {kpis.overdueCount} Overdue · {kpis.driftingCount} Drifting
             </p>
           </div>
+        </SpotlightCard>
+
+        {/* KPI 3: Weekly Streak */}
+        <SpotlightCard className="p-5 flex flex-col justify-between" spotlightColor="rgba(245, 158, 11, 0.12)">
+          <div className="flex items-center justify-between text-slate-500">
+            <span className="text-xs font-semibold">Consistency Streak</span>
+            <Flame className="w-4 h-4 text-amber-500 fill-amber-500" />
+          </div>
+          <div className="mt-3">
+            <span className="text-3xl font-black text-amber-600 dark:text-amber-400">
+              <AnimatedCounter value={kpis.weeklyStreak} />
+            </span>
+            <p className="text-[11px] text-slate-400 mt-1">Consecutive active weeks</p>
+          </div>
+        </SpotlightCard>
+
+        {/* KPI 4: Monthly Interactions */}
+        <SpotlightCard className="p-5 flex flex-col justify-between" spotlightColor="rgba(99, 102, 241, 0.12)">
+          <div className="flex items-center justify-between text-slate-500">
+            <span className="text-xs font-semibold">30-Day Touchpoints</span>
+            <Users className="w-4 h-4 text-indigo-500" />
+          </div>
+          <div className="mt-3">
+            <span className="text-3xl font-black text-slate-900 dark:text-white">
+              <AnimatedCounter value={kpis.monthlyInteractions} />
+            </span>
+            <p className="text-[11px] text-slate-400 mt-1">
+              {kpis.totalInteractions} all-time interactions
+            </p>
+          </div>
+        </SpotlightCard>
+      </div>
+
+      {/* 2-Column Row: Momentum Chart + Channel Mix Donut */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2">
+          <MomentumAreaChart data={momentumData} />
+        </div>
+        <div>
+          <ChannelDonut data={channelData} />
         </div>
       </div>
 
-      {/* 4-Panel Recharts Analytics Grid */}
+      {/* 2-Column Row: Circle Health Breakdown + Priority At-Risk List */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Panel 1: 12-Week Momentum Area Chart */}
-        <MomentumAreaChart data={momentumData} />
-
-        {/* Panel 2: Channel Mix Donut Chart */}
-        <ChannelDonut data={channelData} />
-
-        {/* Panel 3: Circle Tier Health vs Benchmark */}
-        <CircleHealthChart data={tierHealthData} />
-
-        {/* Panel 4: At-Risk & Drifting Watchlist */}
-        <AtRiskList friends={friends} />
+        <div>
+          <CircleHealthChart data={tierHealthData} />
+        </div>
+        <div>
+          <AtRiskList friends={filteredFriends} />
+        </div>
       </div>
     </div>
   );

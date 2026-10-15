@@ -15,10 +15,14 @@ import {
   X,
   Layers,
   Sparkles,
+  Users,
+  Briefcase,
 } from 'lucide-react';
 import { useFriends } from '../context/FriendContext';
-import { ChannelType, InteractionDepth, Interaction } from '../types';
+import { ChannelType, InteractionDepth, Interaction, PersonaCategory } from '../types';
 import { InteractionEditModal } from '../components/timeline/InteractionEditModal';
+import { SpotlightCard } from '../components/ui/SpotlightCard';
+import { AnimatedCounter } from '../components/ui/AnimatedCounter';
 
 const CHANNELS: (ChannelType | 'All')[] = ['All', 'In-Person', 'Video', 'Call', 'Text'];
 const DEPTHS: (InteractionDepth | 'All')[] = ['All', 'Deep Talk', 'Catch-Up', 'Quick Sync'];
@@ -33,6 +37,7 @@ export const Timeline: React.FC = () => {
   const { friends, interactions, deleteInteraction, openCommandPalette } = useFriends();
 
   // Filters
+  const [selectedCategory, setSelectedCategory] = useState<PersonaCategory | 'All'>('All');
   const [selectedFriendId, setSelectedFriendId] = useState<string | 'All'>('All');
   const [selectedChannel, setSelectedChannel] = useState<ChannelType | 'All'>('All');
   const [selectedDepth, setSelectedDepth] = useState<InteractionDepth | 'All'>('All');
@@ -57,6 +62,14 @@ export const Timeline: React.FC = () => {
 
     return interactions
       .filter((item) => {
+        // Persona category filter
+        if (selectedCategory !== 'All') {
+          const friend = friendMap.get(item.friendId);
+          if (friend && friend.category !== selectedCategory) {
+            return false;
+          }
+        }
+
         // Friend filter
         if (selectedFriendId !== 'All' && item.friendId !== selectedFriendId) {
           return false;
@@ -94,7 +107,7 @@ export const Timeline: React.FC = () => {
         return true;
       })
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  }, [interactions, selectedFriendId, selectedChannel, selectedDepth, dateRange, search, friendMap]);
+  }, [interactions, selectedCategory, selectedFriendId, selectedChannel, selectedDepth, dateRange, search, friendMap]);
 
   // Channel summary counts
   const channelCounts = useMemo(() => {
@@ -123,6 +136,7 @@ export const Timeline: React.FC = () => {
   };
 
   const clearAllFilters = () => {
+    setSelectedCategory('All');
     setSelectedFriendId('All');
     setSelectedChannel('All');
     setSelectedDepth('All');
@@ -131,6 +145,7 @@ export const Timeline: React.FC = () => {
   };
 
   const isFiltered =
+    selectedCategory !== 'All' ||
     selectedFriendId !== 'All' ||
     selectedChannel !== 'All' ||
     selectedDepth !== 'All' ||
@@ -143,22 +158,22 @@ export const Timeline: React.FC = () => {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white flex items-center gap-2.5">
-            <Clock className="w-7 h-7 text-emerald-600 dark:text-emerald-400" />
+            <Clock className="w-7 h-7 text-indigo-600 dark:text-indigo-400" />
             Activity Stream & Interaction Ledger
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
-            Searchable log of all touchpoints, deep conversations, and promises across relationships
+            Searchable log of all touchpoints, deep conversations, and commitments across circles
           </p>
         </div>
 
         <button
           type="button"
           onClick={() => openCommandPalette()}
-          className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-2 shadow-md shadow-emerald-600/20 transition-transform active:scale-95 shrink-0"
+          className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs flex items-center gap-2 shadow-md shadow-indigo-600/20 transition-transform active:scale-95 shrink-0"
         >
           <Plus className="w-4 h-4" />
           <span>Log New Interaction</span>
-          <kbd className="ml-1 px-1.5 py-0.5 rounded bg-emerald-700 text-white font-mono text-[10px]">
+          <kbd className="ml-1 px-1.5 py-0.5 rounded bg-indigo-700 text-white font-mono text-[10px]">
             ⌘K
           </kbd>
         </button>
@@ -166,57 +181,79 @@ export const Timeline: React.FC = () => {
 
       {/* Top 4 KPI Metric Chips */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs">
+        <SpotlightCard className="p-4" spotlightColor="rgba(99, 102, 241, 0.12)">
           <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">
             Total Logged
           </span>
           <div className="flex items-baseline gap-2 mt-1">
             <span className="text-2xl font-black text-slate-900 dark:text-white">
-              {interactions.length}
+              <AnimatedCounter value={interactions.length} />
             </span>
             <span className="text-xs text-slate-400">touchpoints</span>
           </div>
-        </div>
+        </SpotlightCard>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs">
+        <SpotlightCard className="p-4" spotlightColor="rgba(16, 185, 129, 0.12)">
           <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">
             In-Person Sessions
           </span>
           <div className="flex items-baseline gap-2 mt-1">
             <span className="text-2xl font-black text-emerald-600 dark:text-emerald-400">
-              {channelCounts.inPerson}
+              <AnimatedCounter value={channelCounts.inPerson} />
             </span>
             <span className="text-xs text-slate-400">1.25x boost</span>
           </div>
-        </div>
+        </SpotlightCard>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs">
+        <SpotlightCard className="p-4" spotlightColor="rgba(20, 184, 166, 0.12)">
           <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">
             Deep Conversations
           </span>
           <div className="flex items-baseline gap-2 mt-1">
             <span className="text-2xl font-black text-teal-600 dark:text-teal-400">
-              {channelCounts.deepTalk}
+              <AnimatedCounter value={channelCounts.deepTalk} />
             </span>
             <span className="text-xs text-slate-400">substantive</span>
           </div>
-        </div>
+        </SpotlightCard>
 
-        <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs">
+        <SpotlightCard className="p-4" spotlightColor="rgba(59, 130, 246, 0.12)">
           <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">
             Calls & Video
           </span>
           <div className="flex items-baseline gap-2 mt-1">
             <span className="text-2xl font-black text-blue-600 dark:text-blue-400">
-              {channelCounts.call + channelCounts.video}
+              <AnimatedCounter value={channelCounts.call + channelCounts.video} />
             </span>
             <span className="text-xs text-slate-400">voice / visual</span>
           </div>
-        </div>
+        </SpotlightCard>
       </div>
 
       {/* Advanced Filter Toolbar */}
       <div className="p-5 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs space-y-4">
+        {/* Persona Segment Tabs */}
+        <div className="flex flex-wrap items-center gap-2 pb-1">
+          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mr-1 flex items-center gap-1">
+            <Users className="w-3.5 h-3.5 text-indigo-500" />
+            <span>Circle Persona:</span>
+          </span>
+          {(['All', 'personal', 'career'] as (PersonaCategory | 'All')[]).map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => setSelectedCategory(cat)}
+              className={`px-3 py-1 text-xs font-medium rounded-xl border transition-all ${
+                selectedCategory === cat
+                  ? 'bg-indigo-600 text-white border-transparent font-semibold shadow-2xs'
+                  : 'bg-white dark:bg-slate-850 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-600'
+              }`}
+            >
+              {cat === 'All' ? 'All Circles' : cat === 'career' ? 'Career & Mentors' : 'Personal Circle'}
+            </button>
+          ))}
+        </div>
+
         {/* Search & Contact Filter */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <div className="relative md:col-span-2">
@@ -362,11 +399,20 @@ export const Timeline: React.FC = () => {
                           <div>
                             <Link
                               to={`/friend/${friend.id}`}
-                              className="font-bold text-sm text-slate-900 dark:text-white hover:text-emerald-600 transition-colors"
+                              className="font-bold text-sm text-slate-900 dark:text-white hover:text-indigo-600 transition-colors"
                             >
                               {friend.name}
                             </Link>
-                            <span className="text-xs text-slate-400 ml-2">
+                            <span
+                              className={`text-[9px] px-1.5 py-0.5 rounded-full font-semibold uppercase ml-2 ${
+                                friend.category === 'career'
+                                  ? 'bg-purple-100 text-purple-700 dark:bg-purple-950/80 dark:text-purple-300'
+                                  : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/80 dark:text-emerald-300'
+                              }`}
+                            >
+                              {friend.category === 'career' ? 'Career' : 'Personal'}
+                            </span>
+                            <span className="text-xs text-slate-400 ml-1.5">
                               · {friend.circleTier}
                             </span>
                           </div>

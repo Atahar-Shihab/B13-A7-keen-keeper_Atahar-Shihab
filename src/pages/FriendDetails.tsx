@@ -20,6 +20,7 @@ import { HealthGauge } from '../components/profile/HealthGauge';
 import { AIBriefingCard } from '../components/profile/AIBriefingCard';
 import { ContextVault } from '../components/profile/ContextVault';
 import { ActionItemsChecklist } from '../components/profile/ActionItemsChecklist';
+import { OutreachActionBar } from '../components/profile/OutreachActionBar';
 import { ChannelType } from '../types';
 
 export const FriendDetails: React.FC = () => {
@@ -115,6 +116,15 @@ export const FriendDetails: React.FC = () => {
               <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
                 {friend.name}
               </h1>
+              <span
+                className={`px-3 py-1 text-xs font-bold rounded-full uppercase tracking-wider ${
+                  friend.category === 'career'
+                    ? 'bg-purple-100 text-purple-700 dark:bg-purple-950/70 dark:text-purple-300 border border-purple-200 dark:border-purple-800'
+                    : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/70 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
+                }`}
+              >
+                {friend.category === 'career' ? 'Career & Mentors' : 'Personal Circle'}
+              </span>
               <span className="px-3 py-1 text-xs font-bold rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                 {friend.circleTier}
               </span>
@@ -175,6 +185,12 @@ export const FriendDetails: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* 1-Click Outreach & Scheduling Action Bar */}
+      <OutreachActionBar
+        friend={friend}
+        pendingTasks={friend.actionItems.filter((a) => !a.completed)}
+      />
 
       {/* Relationship Health Gauge & Cadence Controls */}
       <HealthGauge friend={friend} />

@@ -8,6 +8,8 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import { NetworkKPIs } from '../../types';
+import { SpotlightCard } from '../ui/SpotlightCard';
+import { AnimatedCounter } from '../ui/AnimatedCounter';
 
 interface KPISummaryProps {
   kpis: NetworkKPIs;
@@ -17,7 +19,10 @@ export const KPISummary: React.FC<KPISummaryProps> = ({ kpis }) => {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-3.5 mb-8">
       {/* 1. Network Health Index */}
-      <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between">
+      <SpotlightCard
+        className="p-4 flex flex-col justify-between"
+        spotlightColor="rgba(16, 185, 129, 0.12)"
+      >
         <div className="flex items-center justify-between text-slate-500 dark:text-slate-400">
           <span className="text-xs font-semibold">Network Health</span>
           <div className="p-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
@@ -27,7 +32,7 @@ export const KPISummary: React.FC<KPISummaryProps> = ({ kpis }) => {
         <div className="mt-3">
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-extrabold text-slate-900 dark:text-white">
-              {kpis.averageHealth}%
+              <AnimatedCounter value={kpis.averageHealth} suffix="%" />
             </span>
             <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center">
               <TrendingUp className="w-3 h-3 mr-0.5" /> Exponential
@@ -41,10 +46,13 @@ export const KPISummary: React.FC<KPISummaryProps> = ({ kpis }) => {
             />
           </div>
         </div>
-      </div>
+      </SpotlightCard>
 
       {/* 2. Needs Attention Today */}
-      <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between">
+      <SpotlightCard
+        className="p-4 flex flex-col justify-between"
+        spotlightColor="rgba(239, 68, 68, 0.12)"
+      >
         <div className="flex items-center justify-between text-slate-500 dark:text-slate-400">
           <span className="text-xs font-semibold">Needs Attention</span>
           <div className="p-1.5 rounded-lg bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400">
@@ -54,7 +62,7 @@ export const KPISummary: React.FC<KPISummaryProps> = ({ kpis }) => {
         <div className="mt-3">
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-extrabold text-rose-600 dark:text-rose-400">
-              {kpis.needsAttentionCount}
+              <AnimatedCounter value={kpis.needsAttentionCount} />
             </span>
             <span className="text-xs text-slate-400">contacts &lt;50%</span>
           </div>
@@ -62,10 +70,13 @@ export const KPISummary: React.FC<KPISummaryProps> = ({ kpis }) => {
             {kpis.overdueCount} overdue · {kpis.driftingCount} drifting
           </p>
         </div>
-      </div>
+      </SpotlightCard>
 
       {/* 3. Consistency Streak */}
-      <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between">
+      <SpotlightCard
+        className="p-4 flex flex-col justify-between"
+        spotlightColor="rgba(245, 158, 11, 0.12)"
+      >
         <div className="flex items-center justify-between text-slate-500 dark:text-slate-400">
           <span className="text-xs font-semibold">Weekly Streak</span>
           <div className="p-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400">
@@ -75,7 +86,7 @@ export const KPISummary: React.FC<KPISummaryProps> = ({ kpis }) => {
         <div className="mt-3">
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-extrabold text-amber-600 dark:text-amber-400">
-              {kpis.weeklyStreak}
+              <AnimatedCounter value={kpis.weeklyStreak} />
             </span>
             <span className="text-xs text-slate-400">consecutive weeks</span>
           </div>
@@ -83,10 +94,13 @@ export const KPISummary: React.FC<KPISummaryProps> = ({ kpis }) => {
             Active relationship momentum
           </p>
         </div>
-      </div>
+      </SpotlightCard>
 
       {/* 4. Active Network Contacts */}
-      <div className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between">
+      <SpotlightCard
+        className="p-4 flex flex-col justify-between"
+        spotlightColor="rgba(99, 102, 241, 0.12)"
+      >
         <div className="flex items-center justify-between text-slate-500 dark:text-slate-400">
           <span className="text-xs font-semibold">Total Relationships</span>
           <div className="p-1.5 rounded-lg bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400">
@@ -96,7 +110,7 @@ export const KPISummary: React.FC<KPISummaryProps> = ({ kpis }) => {
         <div className="mt-3">
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-extrabold text-slate-900 dark:text-white">
-              {kpis.totalFriends}
+              <AnimatedCounter value={kpis.totalFriends} />
             </span>
             <span className="text-xs text-slate-400">contacts</span>
           </div>
@@ -104,10 +118,13 @@ export const KPISummary: React.FC<KPISummaryProps> = ({ kpis }) => {
             {kpis.thrivingCount} thriving · {kpis.steadyCount} steady
           </p>
         </div>
-      </div>
+      </SpotlightCard>
 
       {/* 5. Monthly Check-Ins */}
-      <div className="hidden lg:flex p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs flex-col justify-between">
+      <SpotlightCard
+        className="hidden lg:flex p-4 flex-col justify-between"
+        spotlightColor="rgba(20, 184, 166, 0.12)"
+      >
         <div className="flex items-center justify-between text-slate-500 dark:text-slate-400">
           <span className="text-xs font-semibold">Monthly Logs</span>
           <div className="p-1.5 rounded-lg bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400">
@@ -117,7 +134,7 @@ export const KPISummary: React.FC<KPISummaryProps> = ({ kpis }) => {
         <div className="mt-3">
           <div className="flex items-baseline gap-2">
             <span className="text-2xl font-extrabold text-slate-900 dark:text-white">
-              {kpis.monthlyInteractions}
+              <AnimatedCounter value={kpis.monthlyInteractions} />
             </span>
             <span className="text-xs text-slate-400">last 30 days</span>
           </div>
@@ -125,7 +142,7 @@ export const KPISummary: React.FC<KPISummaryProps> = ({ kpis }) => {
             {kpis.totalInteractions} all-time interactions
           </p>
         </div>
-      </div>
+      </SpotlightCard>
     </div>
   );
 };
