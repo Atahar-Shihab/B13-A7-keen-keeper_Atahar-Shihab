@@ -9,13 +9,13 @@ import {
   RotateCcw,
   Menu,
   X,
-  Sparkles,
   Command,
   Compass,
   Zap,
 } from 'lucide-react';
 import { useFriends } from '../../context/FriendContext';
 import { ThemeToggle } from './ThemeToggle';
+import { BrandLogo } from './BrandLogo';
 
 export const Navbar: React.FC = () => {
   const {
@@ -45,23 +45,8 @@ export const Navbar: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           {/* Left: Brand Identity */}
           <div className="flex items-center gap-6">
-            <NavLink to="/" className="flex items-center gap-2.5 group">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-600/20 group-hover:scale-105 transition-transform">
-                <Sparkles className="w-5 h-5 animate-pulse" />
-              </div>
-              <div className="flex flex-col">
-                <div className="flex items-center gap-1.5">
-                  <span className="font-extrabold text-lg tracking-tight text-slate-900 dark:text-white">
-                    KeenKeeper
-                  </span>
-                  <span className="px-1.5 py-0.5 text-[10px] font-bold tracking-wide rounded-md bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
-                    v2.0
-                  </span>
-                </div>
-                <span className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
-                  Relationship Intelligence CRM
-                </span>
-              </div>
+            <NavLink to="/" className="flex items-center group">
+              <BrandLogo size="md" showText={true} showBadge={true} />
             </NavLink>
 
             {/* Desktop Navigation Links */}

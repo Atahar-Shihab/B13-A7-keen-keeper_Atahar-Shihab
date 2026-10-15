@@ -1,6 +1,7 @@
 import React from 'react';
-import { Heart, Activity, ShieldCheck, Sparkles, Database } from 'lucide-react';
+import { Heart, Activity, ShieldCheck, Database } from 'lucide-react';
 import { useFriends } from '../../context/FriendContext';
+import { BrandLogo } from './BrandLogo';
 
 export const Footer: React.FC = () => {
   const { friends, interactions } = useFriends();
@@ -11,17 +12,7 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Brand info */}
           <div className="space-y-3 md:col-span-2">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold text-xs">
-                KK
-              </div>
-              <span className="font-bold text-base text-slate-900 dark:text-white">
-                KeenKeeper v2.0
-              </span>
-              <span className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300">
-                Production Release
-              </span>
-            </div>
+            <BrandLogo size="sm" showText={true} showBadge={true} />
             <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm leading-relaxed">
               Flagship personal CRM and algorithmic relationship health decay engine.
               Nurture authentic connections through mathematical cadences, proactive reminders, and AI copilot intelligence.
