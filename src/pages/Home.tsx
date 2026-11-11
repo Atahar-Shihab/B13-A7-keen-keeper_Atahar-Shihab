@@ -24,6 +24,7 @@ import { ViewSwitcher, DashboardViewMode } from '../components/dashboard/ViewSwi
 import { OrbitalRadar } from '../components/dashboard/OrbitalRadar';
 import { KanbanBoard } from '../components/dashboard/KanbanBoard';
 import { UpcomingCelebrations } from '../components/dashboard/UpcomingCelebrations';
+import { AchievementShowcase } from '../components/dashboard/AchievementShowcase';
 
 const Home: React.FC = () => {
   const {
@@ -210,6 +211,9 @@ const Home: React.FC = () => {
 
       {/* Upcoming Celebrations (Birthdays & Anniversaries) */}
       <UpcomingCelebrations />
+
+      {/* Network Mastery Level & Achievements */}
+      <AchievementShowcase />
 
       {/* Filterable Contact Directory Header & Switchers */}
       <section className="space-y-4">
