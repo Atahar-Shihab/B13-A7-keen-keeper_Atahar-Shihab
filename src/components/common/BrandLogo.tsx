@@ -4,13 +4,15 @@ interface BrandLogoProps {
   size?: 'sm' | 'md' | 'lg' | number;
   showText?: boolean;
   showBadge?: boolean;
+  showSubtitle?: boolean;
   className?: string;
 }
 
 export const BrandLogo: React.FC<BrandLogoProps> = ({
   size = 'md',
   showText = true,
-  showBadge = true,
+  showBadge = false,
+  showSubtitle = false,
   className = '',
 }) => {
   const uid = useId().replace(/:/g, '');
@@ -106,13 +108,15 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
             </span>
             {showBadge && (
               <span className="px-1.5 py-0.5 text-[10px] font-mono font-bold tracking-wide rounded-md bg-indigo-50 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
-                v2.0
+                v2.1
               </span>
             )}
           </div>
-          <span className="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-medium tracking-tight mt-0.5">
-            Relationship Intelligence OS
-          </span>
+          {showSubtitle && (
+            <span className="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-medium tracking-tight mt-0.5">
+              Relationship Intelligence OS
+            </span>
+          )}
         </div>
       )}
     </div>
