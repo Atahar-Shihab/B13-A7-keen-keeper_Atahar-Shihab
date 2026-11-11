@@ -110,6 +110,24 @@ Visualizes relationships as a living planetary solar system:
 - Generates 3-bullet Catch-Up Briefings and tailored conversation icebreakers.
 - Guaranteed reliability: if `VITE_GEMINI_API_KEY` is not configured, the local deterministic rule-based synthesizer activates instantly with zero UI disruption.
 
+### 8. Celebration Intelligence (Birthdays & Anniversaries)
+- Dedicated **Upcoming Celebrations** dashboard panel scanning all relationships within 30 days.
+- Real-time countdown badges (`🎂 Today!`, `🎉 3d`, etc.) on FriendCards with age milestones.
+- Quick date enrollment via Add Contact modal and profile header.
+
+### 9. Smart Contact Preferences & Live Timezone Clock
+- **Live Timezone Clock Widget:** Shows the contact's current local time with sleep/awake status indicators to avoid waking people up.
+- **Preferred Outreach Channel & Best Window:** Specifies ideal contact method (Text, Call, Video, In-Person, Email, Async Voice) and friction-free time windows.
+- **Context Scratchpad:** Persistent fleeting notepad on every contact profile for coffee preferences, trip dates, and quick thoughts.
+
+### 10. Network Mastery Gamification & Achievement Badges
+- **XP & Level Progression:** Real-time XP tracking across interactions, deep talks, in-person meetings, weekly streaks, and vault entries (Level 1 "Apprentice Connector" → Level 5 "Master of Resonance").
+- **8 Distinct Achievements:** Including *First Step*, *Deep Diver*, *Cadence Sentinel*, *Face-to-Face Champ*, *Vault Archivist*, *Inner Circle Shield*, *Celebration Sentinel*, and *Century Touchpoint* with bronze, silver, gold, and platinum badges.
+
+### 11. Network Tag Cloud Explorer & Active Filter Chips
+- Frequency-weighted interactive tag cloud with count badges (`#Tech (6)`, `#Founder (3)`).
+- Instant 1-click filter activation with active filter chip strip and individual dismiss buttons.
+
 ---
 
 ## 🏛 System Architecture
