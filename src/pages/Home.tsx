@@ -142,25 +142,24 @@ const Home: React.FC = () => {
       {/* Hero Executive Banner */}
       <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-850 to-indigo-950 text-white p-6 sm:p-8 md:p-10 shadow-xl border border-slate-800">
         <div className="relative z-10 max-w-2xl space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold backdrop-blur-md">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Relationship Health Intelligence OS v2.0</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium backdrop-blur-md">
+            <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+            <span>Thoughtful Relationship Stewardship</span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white leading-tight">
-            Nurture authentic connections with mathematical precision.
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white leading-tight">
+            Stay close to the people who shape your world.
           </h1>
 
           <p className="text-sm text-slate-300 leading-relaxed max-w-xl">
-            KeenKeeper models relationship entropy using exponential half-life decay.
-            Prioritize who to call, capture deep context notes, schedule meetings in 1-click, and accelerate catch-ups with the 5-Minute Sprint.
+            Life gets busy, but meaningful connections don't have to drift. KeenKeeper helps you remember the important details, reach out with intention, and keep your circles healthy and thriving.
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-3">
             <button
               type="button"
               onClick={() => openCommandPalette()}
-              className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-indigo-600/30 transition-transform active:scale-95"
+              className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs flex items-center gap-2 shadow-lg shadow-indigo-600/25 transition-transform active:scale-95"
             >
               <Command className="w-4 h-4" />
               <span>Quick Check-In</span>
@@ -172,11 +171,11 @@ const Home: React.FC = () => {
             <button
               type="button"
               onClick={openSprintModal}
-              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-indigo-600 hover:from-amber-450 hover:to-indigo-500 text-white font-bold text-xs flex items-center gap-2 shadow-lg shadow-indigo-600/25 transition-transform active:scale-95"
+              className="px-4 py-2.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/30 text-amber-200 font-semibold text-xs flex items-center gap-2 transition-all active:scale-95"
             >
-              <Zap className="w-4 h-4 fill-current text-amber-200" />
-              <span>5-Min Sprint</span>
-              <kbd className="ml-1 px-1.5 py-0.5 rounded bg-black/25 text-white font-mono text-[10px]">
+              <Zap className="w-4 h-4 fill-amber-300 text-amber-300" />
+              <span>5-Min Reconnect Sprint</span>
+              <kbd className="ml-1 px-1.5 py-0.5 rounded bg-amber-400/20 text-amber-200 font-mono text-[10px]">
                 ⌘J
               </kbd>
             </button>
@@ -184,19 +183,10 @@ const Home: React.FC = () => {
             <button
               type="button"
               onClick={openAddFriendModal}
-              className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-semibold text-xs flex items-center gap-2 border border-white/10 backdrop-blur-sm transition-colors"
+              className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-medium text-xs flex items-center gap-2 border border-white/10 backdrop-blur-sm transition-colors"
             >
               <UserPlus className="w-4 h-4" />
-              <span>Enroll Contact</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={openGuideModal}
-              className="px-4 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white font-semibold text-xs flex items-center gap-2 border border-white/10 backdrop-blur-sm transition-colors"
-            >
-              <Compass className="w-4 h-4 text-emerald-400" />
-              <span>How It Works (Guide)</span>
+              <span>Add Someone New</span>
             </button>
           </div>
         </div>
@@ -224,13 +214,13 @@ const Home: React.FC = () => {
           <div>
             <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <Users className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-              Relationship Intelligence Center
+              Your Circles & Connections
               <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
                 {filteredFriends.length} of {friends.length}
               </span>
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              Switch perspectives between Bento Grid, Solar Orbital Radar, and Pipeline Board
+              Explore your relationships via Bento Grid, Solar Orbital Radar, or Pipeline Board
             </p>
           </div>
 
