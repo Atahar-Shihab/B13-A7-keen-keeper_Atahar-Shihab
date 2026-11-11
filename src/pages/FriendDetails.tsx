@@ -23,6 +23,7 @@ import { AIBriefingCard } from '../components/profile/AIBriefingCard';
 import { ContextVault } from '../components/profile/ContextVault';
 import { ActionItemsChecklist } from '../components/profile/ActionItemsChecklist';
 import { OutreachActionBar } from '../components/profile/OutreachActionBar';
+import { ContactPreferences } from '../components/profile/ContactPreferences';
 import { ChannelType } from '../types';
 
 export const FriendDetails: React.FC = () => {
@@ -218,6 +219,9 @@ export const FriendDetails: React.FC = () => {
         friend={friend}
         pendingTasks={friend.actionItems.filter((a) => !a.completed)}
       />
+
+      {/* Smart Contact Preferences & Scratchpad */}
+      <ContactPreferences friend={friend} />
 
       {/* Relationship Health Gauge & Cadence Controls */}
       <HealthGauge friend={friend} />
