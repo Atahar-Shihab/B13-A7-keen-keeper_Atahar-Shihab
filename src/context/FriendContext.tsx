@@ -47,6 +47,8 @@ interface FriendContextType {
     tags?: string[];
     bio?: string;
     customCadenceDays?: number;
+    birthday?: string;
+    anniversary?: string;
   }) => Friend;
   updateFriend: (id: string, updates: Partial<Friend>) => void;
   deleteFriend: (id: string) => void;
@@ -280,6 +282,8 @@ export const FriendProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       tags?: string[];
       bio?: string;
       customCadenceDays?: number;
+      birthday?: string;
+      anniversary?: string;
     }): Friend => {
       const nowIso = new Date().toISOString();
       const newFriend: Friend = {
@@ -301,6 +305,8 @@ export const FriendProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         tags: friendData.tags || ['Network'],
         bio: friendData.bio || '',
         customCadenceDays: friendData.customCadenceDays,
+        birthday: friendData.birthday,
+        anniversary: friendData.anniversary,
         lastContactDate: nowIso,
         healthScore: 100,
         status: 'Thriving',

@@ -14,6 +14,8 @@ import {
   Clock,
   Trash2,
   Sparkles,
+  Cake,
+  Gift,
 } from 'lucide-react';
 import { useFriends } from '../context/FriendContext';
 import { HealthGauge } from '../components/profile/HealthGauge';
@@ -166,6 +168,31 @@ export const FriendDetails: React.FC = () => {
               <span className="flex items-center gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-slate-400" />
                 <span>{friend.location}</span>
+              </span>
+            )}
+            {friend.birthday && (
+              <span className="flex items-center gap-1.5 text-pink-600 dark:text-pink-400 font-medium">
+                <Cake className="w-3.5 h-3.5 text-pink-500" />
+                <span>
+                  Birthday:{' '}
+                  {new Date(friend.birthday + 'T00:00:00').toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                  })}
+                </span>
+              </span>
+            )}
+            {friend.anniversary && (
+              <span className="flex items-center gap-1.5 text-indigo-600 dark:text-indigo-400 font-medium">
+                <Gift className="w-3.5 h-3.5 text-indigo-500" />
+                <span>
+                  Anniversary:{' '}
+                  {new Date(friend.anniversary + 'T00:00:00').toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })}
+                </span>
               </span>
             )}
           </div>

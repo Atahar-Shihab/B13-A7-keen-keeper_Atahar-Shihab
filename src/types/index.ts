@@ -56,6 +56,8 @@ export interface Friend {
   roleOrContext?: string;
   companyOrOrg?: string;
   snoozeUntil?: string; // ISO string if check-in snoozed
+  birthday?: string; // YYYY-MM-DD
+  anniversary?: string; // YYYY-MM-DD — relationship anniversary, work anniversary, etc.
   circleTier: CircleTier;
   tags: string[];
   bio: string;
