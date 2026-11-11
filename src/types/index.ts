@@ -8,6 +8,16 @@ export type HealthStatus = 'Thriving' | 'Steady' | 'Drifting' | 'Overdue';
 
 export type ChannelType = 'Call' | 'Text' | 'Video' | 'In-Person';
 
+export type PreferredChannel = 'Call' | 'Text' | 'Video' | 'In-Person' | 'Email' | 'Async Voice';
+export type BestReachTime = 'Morning' | 'Afternoon' | 'Evening' | 'Weekends' | 'Anytime';
+
+export interface ContactPreferences {
+  preferredChannel?: PreferredChannel;
+  bestTimeToReach?: BestReachTime;
+  timezone?: string; // e.g. "America/Los_Angeles", "America/New_York", "Europe/London"
+  pronouns?: string; // e.g. "they/them", "she/her", "he/him"
+}
+
 export type InteractionDepth = 'Deep Talk' | 'Catch-Up' | 'Quick Sync';
 
 export type VaultCategory = 'Milestone' | 'Gift Idea' | 'Note';
@@ -58,6 +68,8 @@ export interface Friend {
   snoozeUntil?: string; // ISO string if check-in snoozed
   birthday?: string; // YYYY-MM-DD
   anniversary?: string; // YYYY-MM-DD — relationship anniversary, work anniversary, etc.
+  preferences?: ContactPreferences;
+  quickNotes?: string; // Fleeting context scratchpad
   circleTier: CircleTier;
   tags: string[];
   bio: string;
