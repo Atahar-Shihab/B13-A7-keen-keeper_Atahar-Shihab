@@ -23,6 +23,7 @@ import { PersonaSwitcher } from '../components/dashboard/PersonaSwitcher';
 import { ViewSwitcher, DashboardViewMode } from '../components/dashboard/ViewSwitcher';
 import { OrbitalRadar } from '../components/dashboard/OrbitalRadar';
 import { KanbanBoard } from '../components/dashboard/KanbanBoard';
+import { UpcomingCelebrations } from '../components/dashboard/UpcomingCelebrations';
 
 const Home: React.FC = () => {
   const {
@@ -206,6 +207,9 @@ const Home: React.FC = () => {
 
       {/* Priority Needs Attention Queue */}
       <NeedsAttentionQueue attentionQueue={attentionQueue} />
+
+      {/* Upcoming Celebrations (Birthdays & Anniversaries) */}
+      <UpcomingCelebrations />
 
       {/* Filterable Contact Directory Header & Switchers */}
       <section className="space-y-4">

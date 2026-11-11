@@ -9,6 +9,7 @@ import {
   Mail,
   Send,
   Moon,
+  Cake,
 } from 'lucide-react';
 import { Friend } from '../../types';
 import { useFriends } from '../../context/FriendContext';
@@ -18,6 +19,7 @@ import {
   getTargetCadence,
   isFriendSnoozed,
 } from '../../lib/relationshipEngine';
+import { getFriendCelebration } from '../../lib/celebrationEngine';
 import { SpotlightCard } from '../ui/SpotlightCard';
 import { HealthRing } from '../ui/HealthRing';
 import { launchOutreach } from '../../lib/outreachLauncher';
@@ -35,6 +37,7 @@ export const FriendCard: React.FC<FriendCardProps> = ({ friend }) => {
   const cadence = getTargetCadence(friend);
   const openTasks = friend.actionItems.filter((a) => !a.completed);
   const snoozed = isFriendSnoozed(friend);
+  const celebration = getFriendCelebration(friend, 30);
 
   const handleLaunchOutreach = (channel: 'whatsapp' | 'email' | 'linkedin', e: React.MouseEvent) => {
     e.stopPropagation();
@@ -132,6 +135,22 @@ export const FriendCard: React.FC<FriendCardProps> = ({ friend }) => {
           >
             {friend.status}
           </span>
+
+          {celebration && (
+            <span
+              className={`px-2 py-0.5 text-[10px] font-bold rounded-md flex items-center gap-1 ${
+                celebration.daysUntil <= 3
+                  ? 'bg-pink-100 text-pink-700 dark:bg-pink-950/70 dark:text-pink-300 border border-pink-300 dark:border-pink-800 animate-pulse'
+                  : 'bg-pink-50 text-pink-600 dark:bg-pink-950/40 dark:text-pink-400 border border-pink-200 dark:border-pink-900'
+              }`}
+              title={celebration.label}
+            >
+              <Cake className="w-3 h-3 text-pink-500" />
+              {celebration.daysUntil === 0
+                ? 'Today!'
+                : `${celebration.type === 'birthday' ? 'B-day' : 'Anniv'} ${celebration.daysUntil}d`}
+            </span>
+          )}
 
           {openTasks.length > 0 && (
             <span className="px-2 py-0.5 text-[10px] font-semibold rounded-md bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 flex items-center gap-1 ml-auto">

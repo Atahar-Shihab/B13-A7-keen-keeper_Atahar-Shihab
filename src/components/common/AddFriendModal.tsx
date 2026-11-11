@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, UserPlus, Sparkles, Mail, Phone, MapPin, Briefcase } from 'lucide-react';
+import { X, UserPlus, Sparkles, Mail, Phone, MapPin, Briefcase, Cake, Gift } from 'lucide-react';
 import { useFriends } from '../../context/FriendContext';
 import { CircleTier } from '../../types';
 import { CADENCE_MAP } from '../../lib/relationshipEngine';
@@ -27,6 +27,8 @@ export const AddFriendModal: React.FC = () => {
   const [bio, setBio] = useState('');
   const [avatar, setAvatar] = useState(AVATAR_PRESETS[0]);
   const [customCadence, setCustomCadence] = useState<string>('');
+  const [birthday, setBirthday] = useState<string>('');
+  const [anniversary, setAnniversary] = useState<string>('');
 
   if (!isAddFriendModalOpen) return null;
 
@@ -51,6 +53,8 @@ export const AddFriendModal: React.FC = () => {
       bio: bio.trim() || 'Valued relationship in my personal CRM network.',
       avatar,
       customCadenceDays: customCadence ? parseInt(customCadence, 10) : undefined,
+      birthday: birthday || undefined,
+      anniversary: anniversary || undefined,
     });
 
     closeAddFriendModal();
@@ -63,6 +67,8 @@ export const AddFriendModal: React.FC = () => {
     setRole('');
     setBio('');
     setCustomCadence('');
+    setBirthday('');
+    setAnniversary('');
   };
 
   return (
@@ -241,6 +247,38 @@ export const AddFriendModal: React.FC = () => {
                   placeholder="+1 (555) 000-0000"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
+                  className="w-full pl-9 pr-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-hidden focus:ring-2 focus:ring-emerald-500/40"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Birthday & Anniversary */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                Birthday (Optional)
+              </label>
+              <div className="relative">
+                <Cake className="w-4 h-4 text-pink-500 absolute left-3 top-2.5" />
+                <input
+                  type="date"
+                  value={birthday}
+                  onChange={(e) => setBirthday(e.target.value)}
+                  className="w-full pl-9 pr-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-hidden focus:ring-2 focus:ring-emerald-500/40"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                Anniversary (Optional)
+              </label>
+              <div className="relative">
+                <Gift className="w-4 h-4 text-indigo-500 absolute left-3 top-2.5" />
+                <input
+                  type="date"
+                  value={anniversary}
+                  onChange={(e) => setAnniversary(e.target.value)}
                   className="w-full pl-9 pr-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-hidden focus:ring-2 focus:ring-emerald-500/40"
                 />
               </div>
