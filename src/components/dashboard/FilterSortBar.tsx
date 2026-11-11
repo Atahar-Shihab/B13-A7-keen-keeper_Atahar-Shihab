@@ -110,6 +110,66 @@ export const FilterSortBar: React.FC<FilterSortBarProps> = ({
         </div>
       </div>
 
+      {/* Active Filter Badges Strip */}
+      {isAnyFilterActive && (
+        <div className="flex flex-wrap items-center gap-1.5 text-xs animate-in fade-in duration-150">
+          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mr-1">
+            Active:
+          </span>
+          {search && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 text-[11px] font-medium">
+              <span>"{search}"</span>
+              <button
+                type="button"
+                onClick={() => onSearchChange('')}
+                className="hover:text-rose-500"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </span>
+          )}
+          {tierFilter !== 'All' && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 text-[11px] font-medium">
+              <span>Circle: {tierFilter}</span>
+              <button
+                type="button"
+                onClick={() => onTierChange('All')}
+                className="hover:text-rose-500"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </span>
+          )}
+          {statusFilter !== 'All' && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 text-[11px] font-medium">
+              <span>Health: {statusFilter}</span>
+              <button
+                type="button"
+                onClick={() => onStatusChange('All')}
+                className="hover:text-rose-500"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </span>
+          )}
+          {selectedTag !== 'All' && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 text-[11px] font-medium">
+              <span>Tag: #{selectedTag}</span>
+              <button
+                type="button"
+                onClick={() => onTagChange('All')}
+                className="hover:text-rose-500"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </span>
+          )}
+          <span className="text-[11px] text-slate-400 ml-1">
+            ({totalFiltered} contact{totalFiltered !== 1 ? 's' : ''} found)
+          </span>
+        </div>
+      )}
+
       {/* Pill Filters: Circle Tiers & Status */}
       <div className="flex flex-wrap items-center gap-2">
         <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mr-1">

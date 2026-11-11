@@ -25,6 +25,7 @@ import { OrbitalRadar } from '../components/dashboard/OrbitalRadar';
 import { KanbanBoard } from '../components/dashboard/KanbanBoard';
 import { UpcomingCelebrations } from '../components/dashboard/UpcomingCelebrations';
 import { AchievementShowcase } from '../components/dashboard/AchievementShowcase';
+import { TagCloudExplorer } from '../components/dashboard/TagCloudExplorer';
 
 const Home: React.FC = () => {
   const {
@@ -267,6 +268,12 @@ const Home: React.FC = () => {
               sortBy={sortBy}
               onSortChange={setSortBy}
               totalFiltered={filteredFriends.length}
+            />
+
+            <TagCloudExplorer
+              friends={friends}
+              selectedTag={selectedTag}
+              onTagSelect={setSelectedTag}
             />
 
             {filteredFriends.length === 0 ? (
