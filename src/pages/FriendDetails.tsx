@@ -24,6 +24,7 @@ import { ContextVault } from '../components/profile/ContextVault';
 import { ActionItemsChecklist } from '../components/profile/ActionItemsChecklist';
 import { OutreachActionBar } from '../components/profile/OutreachActionBar';
 import { ContactPreferences } from '../components/profile/ContactPreferences';
+import { PageTransition } from '../components/ui/PageTransition';
 import { ChannelType } from '../types';
 
 export const FriendDetails: React.FC = () => {
@@ -74,7 +75,7 @@ export const FriendDetails: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-300 pb-12">
+    <PageTransition className="space-y-8 pb-12">
       {/* Back button & Action controls */}
       <div className="flex items-center justify-between">
         <Link
@@ -347,7 +348,7 @@ export const FriendDetails: React.FC = () => {
           </div>
         </div>
       )}
-    </div>
+    </PageTransition>
   );
 };
 

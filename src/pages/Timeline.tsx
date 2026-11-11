@@ -23,6 +23,8 @@ import { ChannelType, InteractionDepth, Interaction, PersonaCategory } from '../
 import { InteractionEditModal } from '../components/timeline/InteractionEditModal';
 import { SpotlightCard } from '../components/ui/SpotlightCard';
 import { AnimatedCounter } from '../components/ui/AnimatedCounter';
+import { PageTransition } from '../components/ui/PageTransition';
+import { EmptyState } from '../components/ui/EmptyState';
 
 const CHANNELS: (ChannelType | 'All')[] = ['All', 'In-Person', 'Video', 'Call', 'Text'];
 const DEPTHS: (InteractionDepth | 'All')[] = ['All', 'Deep Talk', 'Catch-Up', 'Quick Sync'];
@@ -153,7 +155,7 @@ export const Timeline: React.FC = () => {
     search !== '';
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-300 pb-12">
+    <PageTransition className="space-y-8 pb-12">
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
@@ -354,17 +356,13 @@ export const Timeline: React.FC = () => {
 
       {/* Timeline Stream */}
       {filteredInteractions.length === 0 ? (
-        <div className="py-16 text-center rounded-3xl border border-dashed border-slate-300 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50">
-          <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 mx-auto flex items-center justify-center mb-3">
-            <Filter className="w-6 h-6" />
-          </div>
-          <h3 className="font-bold text-slate-800 dark:text-slate-200 text-base">
-            No interactions match your filters
-          </h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
-            Try resetting your channel or date range filters to view past touchpoints.
-          </p>
-        </div>
+        <EmptyState
+          icon={Filter}
+          title="No interactions match your filters"
+          description="Try resetting your channel, depth, or date range filters to view past touchpoints."
+          actionLabel="Clear All Filters"
+          onAction={clearAllFilters}
+        />
       ) : (
         <div className="relative pl-6 sm:pl-8 border-l-2 border-emerald-500/20 dark:border-emerald-500/10 space-y-6">
           {filteredInteractions.map((item) => {
@@ -491,7 +489,7 @@ export const Timeline: React.FC = () => {
         interaction={editingInteraction}
         onClose={() => setEditingInteraction(null)}
       />
-    </div>
+    </PageTransition>
   );
 };
 

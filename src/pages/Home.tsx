@@ -26,6 +26,8 @@ import { KanbanBoard } from '../components/dashboard/KanbanBoard';
 import { UpcomingCelebrations } from '../components/dashboard/UpcomingCelebrations';
 import { AchievementShowcase } from '../components/dashboard/AchievementShowcase';
 import { TagCloudExplorer } from '../components/dashboard/TagCloudExplorer';
+import { PageTransition } from '../components/ui/PageTransition';
+import { EmptyState } from '../components/ui/EmptyState';
 
 const Home: React.FC = () => {
   const {
@@ -136,7 +138,7 @@ const Home: React.FC = () => {
   }, [friends, activePersona, search, tierFilter, statusFilter, selectedTag, sortBy]);
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-300">
+    <PageTransition className="space-y-8">
       {/* Hero Executive Banner */}
       <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-850 to-indigo-950 text-white p-6 sm:p-8 md:p-10 shadow-xl border border-slate-800">
         <div className="relative z-10 max-w-2xl space-y-4">
@@ -277,17 +279,18 @@ const Home: React.FC = () => {
             />
 
             {filteredFriends.length === 0 ? (
-              <div className="py-16 text-center rounded-2xl border border-dashed border-slate-300 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50">
-                <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 mx-auto flex items-center justify-center mb-3">
-                  <Filter className="w-6 h-6" />
-                </div>
-                <h3 className="font-bold text-slate-800 dark:text-slate-200 text-base">
-                  No contacts match your filters
-                </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
-                  Try adjusting your circle tier, health status, or search query to view relationships.
-                </p>
-              </div>
+              <EmptyState
+                icon={Filter}
+                title="No contacts match your filters"
+                description="Try clearing your search query, circle tier, or health status filter to view contacts."
+                actionLabel="Reset All Filters"
+                onAction={() => {
+                  setSearch('');
+                  setTierFilter('All');
+                  setStatusFilter('All');
+                  setSelectedTag('All');
+                }}
+              />
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {filteredFriends.map((friend) => (
@@ -298,7 +301,7 @@ const Home: React.FC = () => {
           </div>
         )}
       </section>
-    </div>
+    </PageTransition>
   );
 };
 

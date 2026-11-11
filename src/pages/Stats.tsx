@@ -33,6 +33,7 @@ import { AtRiskList } from '../components/analytics/AtRiskList';
 import { PersonaSwitcher } from '../components/dashboard/PersonaSwitcher';
 import { SpotlightCard } from '../components/ui/SpotlightCard';
 import { AnimatedCounter } from '../components/ui/AnimatedCounter';
+import { PageTransition } from '../components/ui/PageTransition';
 
 export const Stats: React.FC = () => {
   const { friends, interactions, importFullState } = useFriends();
@@ -114,7 +115,7 @@ export const Stats: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-300 pb-12">
+    <PageTransition className="space-y-8 pb-12">
       {/* Header & Export Toolbar */}
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
         <div>
@@ -262,7 +263,7 @@ export const Stats: React.FC = () => {
           <AtRiskList friends={filteredFriends} />
         </div>
       </div>
-    </div>
+    </PageTransition>
   );
 };
 
