@@ -49,6 +49,7 @@ const Home: React.FC = () => {
   const [tierFilter, setTierFilter] = useState<CircleTier | 'All'>('All');
   const [statusFilter, setStatusFilter] = useState<HealthStatus | 'All'>('All');
   const [selectedTag, setSelectedTag] = useState<string | 'All'>('All');
+  const [isStarredOnly, setIsStarredOnly] = useState(false);
   const [sortBy, setSortBy] = useState<SortField>('healthAsc');
 
   // Compute Network KPIs
@@ -68,6 +69,11 @@ const Home: React.FC = () => {
       personal: friends.filter((f) => f.category === 'personal').length,
       career: friends.filter((f) => f.category === 'career').length,
     };
+  }, [friends]);
+
+  // Starred count
+  const starredCount = useMemo(() => {
+    return friends.filter((f) => f.starred).length;
   }, [friends]);
 
   // Unique tags across all friends
@@ -111,6 +117,11 @@ const Home: React.FC = () => {
 
         // Tag filter
         if (selectedTag !== 'All' && !friend.tags.includes(selectedTag)) {
+          return false;
+        }
+
+        // Starred filter
+        if (isStarredOnly && !friend.starred) {
           return false;
         }
 
@@ -260,6 +271,9 @@ const Home: React.FC = () => {
               sortBy={sortBy}
               onSortChange={setSortBy}
               totalFiltered={filteredFriends.length}
+              isStarredOnly={isStarredOnly}
+              onStarredOnlyChange={setIsStarredOnly}
+              starredCount={starredCount}
             />
 
             <TagCloudExplorer
@@ -272,13 +286,14 @@ const Home: React.FC = () => {
               <EmptyState
                 icon={Filter}
                 title="No contacts match your filters"
-                description="Try clearing your search query, circle tier, or health status filter to view contacts."
+                description="Try clearing your search query, circle tier, health status, or starred filter to view contacts."
                 actionLabel="Reset All Filters"
                 onAction={() => {
                   setSearch('');
                   setTierFilter('All');
                   setStatusFilter('All');
                   setSelectedTag('All');
+                  setIsStarredOnly(false);
                 }}
               />
             ) : (
