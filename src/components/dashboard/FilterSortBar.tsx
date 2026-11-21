@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, SlidersHorizontal, ArrowUpDown, X } from 'lucide-react';
+import { Search, SlidersHorizontal, ArrowUpDown, X, Star } from 'lucide-react';
 import { CircleTier, HealthStatus, SortField } from '../../types';
 
 interface FilterSortBarProps {
@@ -15,6 +15,9 @@ interface FilterSortBarProps {
   sortBy: SortField;
   onSortChange: (sort: SortField) => void;
   totalFiltered: number;
+  isStarredOnly?: boolean;
+  onStarredOnlyChange?: (val: boolean) => void;
+  starredCount?: number;
 }
 
 const TIERS: (CircleTier | 'All')[] = [
@@ -46,15 +49,19 @@ export const FilterSortBar: React.FC<FilterSortBarProps> = ({
   sortBy,
   onSortChange,
   totalFiltered,
+  isStarredOnly = false,
+  onStarredOnlyChange,
+  starredCount,
 }) => {
   const isAnyFilterActive =
-    search || tierFilter !== 'All' || statusFilter !== 'All' || selectedTag !== 'All';
+    search || tierFilter !== 'All' || statusFilter !== 'All' || selectedTag !== 'All' || isStarredOnly;
 
   const clearFilters = () => {
     onSearchChange('');
     onTierChange('All');
     onStatusChange('All');
     onTagChange('All');
+    onStarredOnlyChange?.(false);
   };
 
   return (
@@ -164,14 +171,45 @@ export const FilterSortBar: React.FC<FilterSortBarProps> = ({
               </button>
             </span>
           )}
+          {isStarredOnly && (
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 text-[11px] font-medium">
+              <Star className="w-3 h-3 fill-current text-amber-500" />
+              <span>Starred Only</span>
+              <button
+                type="button"
+                onClick={() => onStarredOnlyChange?.(false)}
+                className="hover:text-rose-500"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </span>
+          )}
           <span className="text-[11px] text-slate-400 ml-1">
             ({totalFiltered} contact{totalFiltered !== 1 ? 's' : ''} found)
           </span>
         </div>
       )}
 
-      {/* Pill Filters: Circle Tiers & Status */}
+      {/* Pill Filters: Circle Tiers, Status & Starred */}
       <div className="flex flex-wrap items-center gap-2">
+        {/* Starred Filter Button */}
+        {onStarredOnlyChange && (
+          <button
+            type="button"
+            onClick={() => onStarredOnlyChange(!isStarredOnly)}
+            className={`px-3 py-1 text-xs font-medium rounded-xl border flex items-center gap-1.5 transition-all ${
+              isStarredOnly
+                ? 'bg-amber-500 text-white border-transparent shadow-xs font-semibold'
+                : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-700'
+            }`}
+          >
+            <Star className={`w-3.5 h-3.5 ${isStarredOnly ? 'fill-current text-white' : 'text-amber-500'}`} />
+            <span>Starred {starredCount !== undefined ? `(${starredCount})` : ''}</span>
+          </button>
+        )}
+
+        <div className="h-4 w-px bg-slate-200 dark:bg-slate-800 mx-1 hidden sm:block" />
+
         <span className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mr-1">
           Circle:
         </span>
