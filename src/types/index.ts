@@ -70,6 +70,7 @@ export interface Friend {
   anniversary?: string; // YYYY-MM-DD — relationship anniversary, work anniversary, etc.
   preferences?: ContactPreferences;
   quickNotes?: string; // Fleeting context scratchpad
+  starred?: boolean; // Pinned / favorite relationship
   circleTier: CircleTier;
   tags: string[];
   bio: string;

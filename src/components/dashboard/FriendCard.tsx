@@ -10,6 +10,7 @@ import {
   Send,
   Moon,
   Cake,
+  Star,
 } from 'lucide-react';
 import { Friend } from '../../types';
 import { useFriends } from '../../context/FriendContext';
@@ -30,7 +31,7 @@ interface FriendCardProps {
 }
 
 export const FriendCard: React.FC<FriendCardProps> = ({ friend }) => {
-  const { openCommandPalette, snoozeFriend, unsnoozeFriend } = useFriends();
+  const { openCommandPalette, snoozeFriend, unsnoozeFriend, toggleStarFriend } = useFriends();
 
   const statusColors = getStatusColor(friend.status);
   const daysElapsed = getDaysElapsed(friend.lastContactDate);
@@ -91,12 +92,31 @@ export const FriendCard: React.FC<FriendCardProps> = ({ friend }) => {
             </Link>
 
             <div className="min-w-0">
-              <Link
-                to={`/friend/${friend.id}`}
-                className="font-bold text-base text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 truncate block transition-colors"
-              >
-                {friend.name}
-              </Link>
+              <div className="flex items-center gap-1.5">
+                <Link
+                  to={`/friend/${friend.id}`}
+                  className="font-bold text-base text-slate-900 dark:text-white hover:text-indigo-600 dark:hover:text-indigo-400 truncate block transition-colors"
+                >
+                  {friend.name}
+                </Link>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleStarFriend(friend.id);
+                  }}
+                  className={`p-0.5 rounded-md transition-colors ${
+                    friend.starred
+                      ? 'text-amber-500 hover:text-amber-600'
+                      : 'text-slate-300 dark:text-slate-600 hover:text-amber-400'
+                  }`}
+                  title={friend.starred ? 'Starred relationship (click to unstar)' : 'Star relationship'}
+                  aria-label={friend.starred ? 'Unstar relationship' : 'Star relationship'}
+                >
+                  <Star className={`w-3.5 h-3.5 ${friend.starred ? 'fill-amber-400 text-amber-500' : ''}`} />
+                </button>
+              </div>
               <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
                 {friend.roleOrContext || friend.companyOrOrg || friend.role || friend.circleTier}
               </p>

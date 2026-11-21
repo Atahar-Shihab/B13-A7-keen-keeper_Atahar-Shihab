@@ -16,8 +16,12 @@ import {
   Sparkles,
   Cake,
   Gift,
+  Star,
+  Download,
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { useFriends } from '../context/FriendContext';
+import { downloadVCard } from '../lib/vcardExport';
 import { HealthGauge } from '../components/profile/HealthGauge';
 import { AIBriefingCard } from '../components/profile/AIBriefingCard';
 import { ContextVault } from '../components/profile/ContextVault';
@@ -30,7 +34,7 @@ import { ChannelType } from '../types';
 export const FriendDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { getFriend, getFriendInteractions, openCommandPalette, deleteFriend } = useFriends();
+  const { getFriend, getFriendInteractions, openCommandPalette, deleteFriend, toggleStarFriend } = useFriends();
 
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
@@ -86,6 +90,36 @@ export const FriendDetails: React.FC = () => {
         </Link>
 
         <div className="flex items-center gap-2">
+          {/* Star Toggle Button */}
+          <button
+            type="button"
+            onClick={() => toggleStarFriend(friend.id)}
+            className={`px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 border transition-all ${
+              friend.starred
+                ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-800 text-amber-700 dark:text-amber-300'
+                : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
+            }`}
+            title={friend.starred ? 'Starred relationship (click to unstar)' : 'Star relationship'}
+          >
+            <Star className={`w-3.5 h-3.5 ${friend.starred ? 'fill-amber-400 text-amber-500' : ''}`} />
+            <span>{friend.starred ? 'Starred' : 'Star'}</span>
+          </button>
+
+          {/* vCard Export Button */}
+          <button
+            type="button"
+            onClick={() => {
+              downloadVCard(friend);
+              toast.success(`Exported vCard for ${friend.name}`);
+            }}
+            className="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold flex items-center gap-1.5 transition-colors"
+            title="Download vCard (.vcf) for Apple Contacts / Google Contacts"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Export vCard</span>
+            <span className="sm:hidden">.vcf</span>
+          </button>
+
           <button
             type="button"
             onClick={() => openCommandPalette(friend.id)}

@@ -24,6 +24,7 @@ export const SEED_FRIENDS: Friend[] = [
     linkedinUrl: 'https://www.linkedin.com/in/davidkim-architect',
     circleTier: 'Inner Circle',
     birthday: '1996-11-14',
+    starred: true,
     preferences: {
       preferredChannel: 'Text',
       bestTimeToReach: 'Morning',
@@ -92,6 +93,7 @@ export const SEED_FRIENDS: Friend[] = [
     linkedinUrl: 'https://www.linkedin.com/in/mayapatel-ai',
     circleTier: 'Inner Circle',
     birthday: '1995-11-18',
+    starred: true,
     preferences: {
       preferredChannel: 'Async Voice',
       bestTimeToReach: 'Weekends',

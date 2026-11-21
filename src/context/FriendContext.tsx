@@ -56,6 +56,7 @@ interface FriendContextType {
   getFriendInteractions: (friendId: string) => Interaction[];
   snoozeFriend: (id: string, days?: number) => void;
   unsnoozeFriend: (id: string) => void;
+  toggleStarFriend: (id: string) => void;
 
   // Interaction CRUD
   addInteraction: (data: {
@@ -356,6 +357,21 @@ export const FriendProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     toast.info('Snooze cleared');
   }, []);
 
+  const toggleStarFriend = useCallback((id: string) => {
+    setFriends((prev) =>
+      prev.map((f) => {
+        if (f.id !== id) return f;
+        const newStarred = !f.starred;
+        if (newStarred) {
+          toast.success(`Starred ${f.name}`);
+        } else {
+          toast.info(`Unstarred ${f.name}`);
+        }
+        return { ...f, starred: newStarred };
+      })
+    );
+  }, []);
+
   const getFriend = useCallback(
     (id: string): Friend | undefined => {
       return friends.find((f) => f.id === id);
@@ -562,6 +578,7 @@ export const FriendProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     getFriendInteractions,
     snoozeFriend,
     unsnoozeFriend,
+    toggleStarFriend,
     addInteraction,
     updateInteraction,
     deleteInteraction,

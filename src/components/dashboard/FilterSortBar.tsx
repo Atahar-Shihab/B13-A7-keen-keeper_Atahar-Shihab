@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, SlidersHorizontal, ArrowUpDown, X } from 'lucide-react';
+import { Search, SlidersHorizontal, ArrowUpDown, X, Star } from 'lucide-react';
 import { CircleTier, HealthStatus, SortField } from '../../types';
 
 interface FilterSortBarProps {
@@ -15,6 +15,9 @@ interface FilterSortBarProps {
   sortBy: SortField;
   onSortChange: (sort: SortField) => void;
   totalFiltered: number;
+  isStarredOnly?: boolean;
+  onStarredOnlyChange?: (val: boolean) => void;
+  starredCount?: number;
 }
 
 const TIERS: (CircleTier | 'All')[] = [
@@ -46,15 +49,19 @@ export const FilterSortBar: React.FC<FilterSortBarProps> = ({
   sortBy,
   onSortChange,
   totalFiltered,
+  isStarredOnly = false,
+  onStarredOnlyChange,
+  starredCount,
 }) => {
   const isAnyFilterActive =
-    search || tierFilter !== 'All' || statusFilter !== 'All' || selectedTag !== 'All';
+    search || tierFilter !== 'All' || statusFilter !== 'All' || selectedTag !== 'All' || isStarredOnly;
 
   const clearFilters = () => {
     onSearchChange('');
     onTierChange('All');
     onStatusChange('All');
     onTagChange('All');
+    onStarredOnlyChange?.(false);
   };
 
   return (
