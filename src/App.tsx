@@ -45,6 +45,7 @@ const SmoothScrollProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
 const GlobalShortcutsAndModals: React.FC = () => {
   const {
+    theme,
     openCommandPalette,
     isCommandPaletteOpen,
     closeCommandPalette,
@@ -92,7 +93,12 @@ const GlobalShortcutsAndModals: React.FC = () => {
       <AddFriendModal />
       <PlatformGuideModal />
       <ReconnectSprintModal />
-      <Toaster richColors position="bottom-right" closeButton />
+      <Toaster
+        theme={theme === 'light' ? 'light' : 'dark'}
+        richColors
+        position="bottom-right"
+        closeButton
+      />
     </>
   );
 };
