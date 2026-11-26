@@ -9,6 +9,7 @@ import {
   ChannelType,
   InteractionDepth,
   PersonaCategory,
+  ThemeMode,
 } from '../types';
 import { SEED_FRIENDS, SEED_INTERACTIONS } from '../data/seedData';
 import { computeFriendHealth } from '../lib/relationshipEngine';
@@ -22,7 +23,7 @@ const STORAGE_KEYS = {
 interface FriendContextType {
   friends: Friend[];
   interactions: Interaction[];
-  theme: 'light' | 'dark';
+  theme: ThemeMode;
   isCommandPaletteOpen: boolean;
   preselectedFriendForCommand: string | null;
   isAddFriendModalOpen: boolean;
@@ -95,6 +96,7 @@ interface FriendContextType {
   importFullState: (friends: Friend[], interactions: Interaction[]) => void;
 
   // UI state
+  setTheme: (theme: ThemeMode) => void;
   toggleTheme: () => void;
   openCommandPalette: (friendId?: string) => void;
   closeCommandPalette: () => void;
@@ -148,9 +150,9 @@ const recalculateAllFriends = (
 
 export const FriendProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Theme state
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+  const [theme, setTheme] = useState<ThemeMode>(() => {
     const saved = localStorage.getItem(STORAGE_KEYS.THEME);
-    if (saved === 'dark' || saved === 'light') return saved;
+    if (saved === 'dark' || saved === 'light' || saved === 'forest') return saved;
     return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
       ? 'dark'
       : 'light';
@@ -201,16 +203,21 @@ export const FriendProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return recalculateAllFriends(SEED_FRIENDS, SEED_INTERACTIONS);
   });
 
-  // Apply theme class to documentElement
+  // Apply theme classes to documentElement
   useEffect(() => {
     const root = document.documentElement;
+    root.classList.remove('dark', 'theme-forest');
+
     if (theme === 'dark') {
       root.classList.add('dark');
       root.setAttribute('data-theme', 'dark');
+    } else if (theme === 'forest') {
+      root.classList.add('dark', 'theme-forest');
+      root.setAttribute('data-theme', 'forest');
     } else {
-      root.classList.remove('dark');
       root.setAttribute('data-theme', 'light');
     }
+
     localStorage.setItem(STORAGE_KEYS.THEME, theme);
   }, [theme]);
 
@@ -232,8 +239,14 @@ export const FriendProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   }, [interactions]);
 
+  const setThemeMode = useCallback((nextTheme: ThemeMode) => {
+    setTheme(nextTheme);
+  }, []);
+
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+    setTheme((prev) =>
+      prev === 'light' ? 'dark' : prev === 'dark' ? 'forest' : 'light'
+    );
   }, []);
 
   const openCommandPalette = useCallback((friendId?: string) => {
@@ -590,6 +603,7 @@ export const FriendProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     deleteActionItem,
     resetToDemoData,
     importFullState,
+    setTheme: setThemeMode,
     toggleTheme,
     openCommandPalette,
     closeCommandPalette,

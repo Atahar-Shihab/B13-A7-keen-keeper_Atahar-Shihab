@@ -52,6 +52,8 @@ export interface Interaction {
 
 export type PersonaCategory = 'personal' | 'career';
 
+export type ThemeMode = 'light' | 'dark' | 'forest';
+
 export interface Friend {
   id: string;
   name: string;

@@ -16,6 +16,33 @@
   --status-overdue: #ef4444;
   --status-almost: #f59e0b;
   --status-ontrack: #10b981;
+
+  --kk-slate-50: 248 250 252;
+  --kk-slate-100: 241 245 249;
+  --kk-slate-200: 226 232 240;
+  --kk-slate-300: 203 213 225;
+  --kk-slate-400: 148 163 184;
+  --kk-slate-500: 100 116 139;
+  --kk-slate-600: 71 85 105;
+  --kk-slate-700: 51 65 85;
+  --kk-slate-750: 41 53 72;
+  --kk-slate-800: 30 41 59;
+  --kk-slate-850: 21 31 50;
+  --kk-slate-900: 15 23 42;
+  --kk-slate-950: 8 13 26;
+
+  --kk-indigo-50: 238 242 255;
+  --kk-indigo-100: 224 231 255;
+  --kk-indigo-200: 199 210 254;
+  --kk-indigo-300: 165 180 252;
+  --kk-indigo-400: 129 140 248;
+  --kk-indigo-500: 99 102 241;
+  --kk-indigo-600: 79 70 229;
+  --kk-indigo-700: 67 56 202;
+  --kk-indigo-800: 55 48 163;
+  --kk-indigo-900: 49 46 129;
+  --kk-indigo-950: 30 27 75;
+
   color-scheme: light;
 }
 
@@ -31,6 +58,56 @@ html.dark {
   color-scheme: dark;
 }
 
+html.theme-forest {
+  --primary: #14b8a6;
+  --primary-dark: #0f766e;
+  --primary-light: #2dd4bf;
+  --bg: #05100b;
+  --white: #0a1a14;
+  --text: #eef6f2;
+  --text-muted: #84aa99;
+  --border: #1e4234;
+  --status-overdue: #f87171;
+  --status-almost: #fbbf24;
+  --status-ontrack: #34d399;
+  --root-bg: #05100b;
+  --page-scroll-bg: #05100b;
+  --color-base-100: #05100b;
+  --color-base-200: #0a1a14;
+  --color-base-300: #163126;
+  --color-base-content: #eef6f2;
+
+  /* Evergreen Night neutral moss/pine ramp */
+  --kk-slate-50: 242 248 245;
+  --kk-slate-100: 226 240 233;
+  --kk-slate-200: 200 223 212;
+  --kk-slate-300: 170 202 187;
+  --kk-slate-400: 132 170 153;
+  --kk-slate-500: 96 135 118;
+  --kk-slate-600: 61 102 85;
+  --kk-slate-700: 41 78 63;
+  --kk-slate-750: 32 64 51;
+  --kk-slate-800: 22 49 38;
+  --kk-slate-850: 15 36 28;
+  --kk-slate-900: 10 26 20;
+  --kk-slate-950: 5 16 11;
+
+  /* Botanical Teal primary accents */
+  --kk-indigo-50: 240 253 250;
+  --kk-indigo-100: 204 251 241;
+  --kk-indigo-200: 153 246 228;
+  --kk-indigo-300: 94 234 212;
+  --kk-indigo-400: 45 212 191;
+  --kk-indigo-500: 20 184 166;
+  --kk-indigo-600: 13 148 136;
+  --kk-indigo-700: 15 118 110;
+  --kk-indigo-800: 17 94 89;
+  --kk-indigo-900: 19 78 74;
+  --kk-indigo-950: 8 47 44;
+
+  color-scheme: dark;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -43,6 +120,14 @@ body {
   color: var(--text);
   min-height: 100vh;
   transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+html.theme-forest body {
+  background-image: radial-gradient(
+    ellipse 85% 45% at 50% -10%,
+    rgba(20, 184, 166, 0.09),
+    transparent
+  );
 }
 
 #root {
@@ -72,4 +157,12 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(148, 163, 184, 0.7);
+}
+
+html.theme-forest ::-webkit-scrollbar-thumb {
+  background: rgba(94, 234, 212, 0.25);
+}
+
+html.theme-forest ::-webkit-scrollbar-thumb:hover {
+  background: rgba(94, 234, 212, 0.45);
 }
